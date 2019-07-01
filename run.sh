@@ -12,7 +12,7 @@ fi
 # unzip artifact
 if  [ -e '/tmp/yelpCamp.zip' ]
 then
-  unzip /tmp/yelpCamp.zip -d /tmp/app
+  unzip /tmp/yelpCamp.zip -d /tmp/app > /dev/null
   if [ $? -ne 0 ]; then
     echo 'Error unzipping artifact'
     exit 4
@@ -24,4 +24,4 @@ fi
 
 # run the app
 cd /tmp/app
-node app.js
+nohup node app.js > output.log &
