@@ -20,7 +20,7 @@
     "passport-local-mongoose": "^5.0.1"
   },
   "devDependencies": {
-    "chia": "0.0.1",
+    "chai": "^4.2.0",
     "mocha": "^6.1.4"
   }
 }
