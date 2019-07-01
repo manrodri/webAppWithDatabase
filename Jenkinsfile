@@ -27,7 +27,7 @@ pipeline {
                                         sourceFiles: 'dist/yelpCamp*.zip',
                                         removePrefix: 'dist/',
                                         remoteDirectory: '/tmp',
-                                        execCommand: 'unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh'
+                                        execCommand: 'ls /tmp/yelp*  && unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh'
                                         //execCommand: 'sudo /usr/bin/systemctl stop webAppUseCase.service && rm -rf /opt/webAppUseCase/* && unzip /tmp/app.zip -d /opt/webAppUseCase && sudo /usr/bin/systemctl start webAppUseCase'
                                     )
                                 ]
@@ -57,7 +57,7 @@ pipeline {
                                         sourceFiles:'dist/yelpCamp*.zip',
                                         removePrefix: 'dist/',
                                         remoteDirectory: '/tmp',
-                                        execCommand: 'unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh'
+                                        execCommand: 'ls /tmp/yelp* && unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh'
                                         //execCommand: 'sudo /usr/bin/systemctl stop webAppUseCase.service && rm -rf /opt/webAppUseCase/* && unzip /tmp/app.zip -d /opt/webAppUseCase && sudo /usr/bin/systemctl start webAppUseCase'
                                     )
                                 ]
