@@ -37,3 +37,4 @@ fi
 # run the app
 cd /tmp/app
 nohup node app.js > /tmp/yelpCamp.log &
+cat /tmp/yelpCamp.log
