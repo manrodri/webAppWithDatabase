@@ -32,7 +32,7 @@ task zipRunScript(type: Zip) {
 		
 	}
 	destinationDir(file("dist"))
-	baseName "yelpCamp_run.sh"
+	baseName "yelpCamp_run"
 }
 
 //declare task dependencies
