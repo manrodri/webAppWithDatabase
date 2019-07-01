@@ -26,9 +26,20 @@ task zip(type: Zip) {
 	baseName "yelpCamp"
 }
 
+task zipRunScript(type: Zip) {
+	from ('.') {
+		include "run.sh"
+		
+	}
+	destinationDir(file("dist"))
+	baseName "yelpCamp_run.sh"
+}
+
 //declare task dependencies
 build.dependsOn zip
+build.dependsOn zipRunScript
 zip.dependsOn npm_build
+zipRunScript.dependsOn npm_build
 npm_build.dependsOn npm_test
 npm_test.dependsOn npmInstall
 npm_build.dependsOn npmInstall

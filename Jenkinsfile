@@ -26,7 +26,7 @@ pipeline {
                                         sourceFiles: 'dist/yelpCamp.zip',
                                         removePrefix: 'dist/',
                                         remoteDirectory: '/tmp',
-                                        execCommand: 'sh run.sh'
+                                        execCommand: 'unzip /tmp/yelpCamp.zip -d /tmp/app &&  sh /tmp/app/run.sh'
                                         //execCommand: 'sudo /usr/bin/systemctl stop webAppUseCase.service && rm -rf /opt/webAppUseCase/* && unzip /tmp/app.zip -d /opt/webAppUseCase && sudo /usr/bin/systemctl start webAppUseCase'
                                     )
                                 ]
