@@ -24,7 +24,7 @@ pipeline {
                                 ], 
                                 transfers: [
                                     sshTransfer(
-                                        sourceFiles: 'dist/yelpCamp.zip', 'dist/yelpCamp_run.zip'
+                                        sourceFiles: 'dist/yelpCamp*.zip',
                                         removePrefix: 'dist/',
                                         remoteDirectory: '/tmp',
                                         execCommand: 'unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh'
@@ -54,7 +54,7 @@ pipeline {
                                 ], 
                                 transfers: [
                                     sshTransfer(
-                                        sourceFiles:'dist/yelpCamp.zip', 'dist/yelpCamp_run.zip'
+                                        sourceFiles:'dist/yelpCamp*.zip',
                                         removePrefix: 'dist/',
                                         remoteDirectory: '/tmp',
                                         execCommand: 'unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh'
