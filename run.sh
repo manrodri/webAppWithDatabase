@@ -1,6 +1,14 @@
 #!/bin/sh
 # stop node app
+echo 'running: $ killall node'
 sudo killall node
+if [ $? -eq 0 ]; then
+  echo 'node app killed'
+fi
+echo 'checking app is not running: ...'
+echo 'running $ ps aux | grep'
+ps aux | grep node
+
 # check if folder exists
 SRC='/tmp/app'
 if [ -w  $SRC ]
@@ -10,7 +18,7 @@ if [ -w  $SRC ]
 fi
 
 if [ -e '/tmp/run.sh' ]; then
-  rm /tmp/run.sh
+  rm -f /tmp/run.sh
 fi
 
 # unzip artifact
