@@ -9,6 +9,10 @@ if [ -w  $SRC ]
       echo previuous app deleted
 fi
 
+if [ -e '/tmp/run.sh' ]; then
+  rm /tmp/run.sh
+fi
+
 # unzip artifact
 if  [ -e '/tmp/yelpCamp.zip' ]
 then
