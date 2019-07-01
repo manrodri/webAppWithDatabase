@@ -10,7 +10,7 @@ if [ -w  $SRC ]
 fi
 
 # unzip artifact
-if [ -e '/tmp/dist/yelpCamp.zip' ] || [ -e '/tmp/yelpCamp.zip' ]
+if  [ -e '/tmp/yelpCamp.zip' ]
 then
   unzip /tmp/yelpCamp.zip -d /tmp/app
   if [ $? -ne 0 ]; then
@@ -21,7 +21,6 @@ else
   echo could not find release cantidate
   exit 3
 fi
-
 
 # run the app
 cd /tmp/app
