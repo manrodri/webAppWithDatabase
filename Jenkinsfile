@@ -10,10 +10,8 @@ pipeline {
             }
         }
         stage('publish to artifactory'){
-            steps{
-                sh 'whoami'
-                
-
+            steps{ 
+                sh 'npm publish' 
             }
         }
 
