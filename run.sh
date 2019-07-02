@@ -1,7 +1,7 @@
 #!/bin/sh
 # stop node app
 echo 'running: $ killall node'
-sudo killall node
+sudo pkill node
 if [ $? -eq 0 ]; then
   echo 'node app killed'
 fi
@@ -15,12 +15,14 @@ if [ -w  $SRC ]
   then
       rm -r $SRC/*
       echo previuous app deleted
+  else 
+     mkdir /tmp/app
 fi
 
 # unzip artifact
 if  [ -e '/tmp/yelpCamp.zip' ]
 then
-  unzip /tmp/yelpCamp.zip -d /tmp/app > /dev/null
+  unzip -d /tmp/yelpCamp.zip > /dev/null
   if [ $? -ne 0 ]; then
     echo 'Error unzipping artifact'
     exit 4
