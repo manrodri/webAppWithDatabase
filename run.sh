@@ -5,7 +5,7 @@ sudo killall node
 if [ $? -eq 0 ]; then
   echo 'node app killed'
 fi
-echo 'checking app is not running: ...'
+echo checking app is not running: ...
 echo 'running $ ps aux | grep'
 ps aux | grep node
 
@@ -15,10 +15,6 @@ if [ -w  $SRC ]
   then
       rm -r $SRC/*
       echo previuous app deleted
-fi
-
-if [ -e '/tmp/run.sh' ]; then
-  rm -f /tmp/run.sh
 fi
 
 # unzip artifact
