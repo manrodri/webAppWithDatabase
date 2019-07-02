@@ -38,7 +38,7 @@ pipeline {
                                         execCommand: '''cd /tmp && \
                                         curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -O "http://54.72.240.241:8081/artifactory/generic-local/yelpCamp.zip" && \
                                         curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -O "http://54.72.240.241:8081/artifactory/generic-local/yelpCamp_run.zip" && \
-                                        unzip -o yelpCamp_run.zip && echo running script... && sh run.sh
+                                        unzip -o yelpCamp_run.zip && echo running script... && python3 run.py
                                         ''' 
                                     )
                                 ]
