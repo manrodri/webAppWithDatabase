@@ -9,6 +9,7 @@ pipeline {
                 archiveArtifacts artifacts: 'dist/yelpCamp_run.zip'
             }
         }
+
         stage('DeployToStaging') { 
             steps {
                 withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
