@@ -51,7 +51,6 @@ pipeline {
         stage('smoke tests'){
             steps{
                 echo 'running smoke tests....'
-                sh 'cd smokeTest'
                 sh 'python run_some_test.py smoke_test.py smokeTest'
             }
             
