@@ -38,7 +38,7 @@ pipeline {
                                         execCommand: '''cd /tmp && \
                                         curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -O "http://54.72.240.241:8081/artifactory/generic-local/yelpCamp.zip" && \
                                         curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -O "http://54.72.240.241:8081/artifactory/generic-local/yelpCamp_run.zip" && \
-                                        unzip yelpCamp_run.zip -d /tmp/run.sh && sh run.sh
+                                        unzip yelpCamp_run.zip -o /tmp/run.sh && sh run.sh
                                         ''' 
                                     )
                                 ]
@@ -52,7 +52,7 @@ pipeline {
             steps{
                 echo 'running smoke tests....'
                 sh 'cd smokeTest'
-                sh 'python -m unittest smoke_test.py'
+                sh 'python run_some_test.py smoke_test.py smokeTest'
             }
             
         }
