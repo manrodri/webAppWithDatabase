@@ -22,7 +22,7 @@ fi
 # unzip artifact
 if  [ -e '/tmp/yelpCamp.zip' ]
 then
-  unzip -d /tmp/yelpCamp.zip > /dev/null
+  unzip  /tmp/yelpCamp.zip  -d /tmp/app > /dev/null
   if [ $? -ne 0 ]; then
     echo 'Error unzipping artifact'
     exit 4
