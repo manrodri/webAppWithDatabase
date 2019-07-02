@@ -49,9 +49,12 @@ pipeline {
             }
         }
         stage('smoke tests'){
-            echo 'running smoke tests....'
-            sh 'cd smokeTest'
-            sh 'python -m unittest smoke_test.py'
+            steps{
+                echo 'running smoke tests....'
+                sh 'cd smokeTest'
+                sh 'python -m unittest smoke_test.py'
+            }
+            
         }
         // stage('DeployToProduction') {
         //     steps {
