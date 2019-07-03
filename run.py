@@ -63,7 +63,7 @@ if rc[1]:
         break
 
 else:
-  logger.error('No service running on port: {}'.format(int(port)))
+  logger.error('No service running on port: {}'.format(args.port))
 
 # run the app
 cmd = "nohup node {} > /tmp/yelpCamp.log &".format(args.entry_point)
