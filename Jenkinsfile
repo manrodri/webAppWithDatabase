@@ -33,7 +33,7 @@ pipeline {
                 milestone(1)
                 echo 'Destroying staging server'
                 sh 'cd terraform && terraform plan -destroy -out=tfdestroyplan -input=false'
-                sh "cd terrafrom && terraform apply -lock=false -input=false tfdestroyplan"
+                sh "cd terraform && terraform apply -lock=false -input=false tfdestroyplan"
             }
         }
 
