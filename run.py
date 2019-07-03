@@ -4,6 +4,8 @@ import subprocess
 from zipfile import ZipFile
 import logging
 
+"""
+
 print('killing node process...')
 os.system('sudo pkill node')
 
@@ -60,3 +62,5 @@ with open('/tmp/yelpCamp.log', 'r') as f:
   for line in f:
     print(line)
 #cat /tmp/yelpCamp.log
+"""
+print ('Running the app: GODD LUCK!')
