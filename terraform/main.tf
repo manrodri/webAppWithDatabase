@@ -14,6 +14,7 @@ resource "aws_instance" "staging_server" {
 
   tags {
     Name = "staging server Terraform",
-    owner= "manuel"
+    owner= "manuel",
+    provisioned="terraform"
   }
 }
