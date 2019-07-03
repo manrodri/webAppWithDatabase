@@ -23,7 +23,7 @@ pipeline {
                 echo 'Provisioning staging server with Terraform'
                 sh 'cd terraform && terraform init'
                 sh 'cd terraform && terraform plan -out=tfplan -input=false'
-                sh 'terraform apply -lock=false -input=false tfplan'
+                sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
             }
         }
 
