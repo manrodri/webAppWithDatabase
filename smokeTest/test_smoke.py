@@ -24,8 +24,3 @@ class TestEndPointAreUp(unittest.TestCase):
         campgrounds_url = self.url + '/foo'
         response = requests.get(campgrounds_url)
         self.assertEqual(404, response.status_code)
-
-    
-
-if __name__ == '__main__':
-    unittest.main()
