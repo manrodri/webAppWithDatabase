@@ -21,8 +21,8 @@ pipeline {
         stage('Provision staging server'){
             steps{
                 echo 'Provisioning staging server with Terraform'
-                sh 'cd terraform && terraform init'
-                sh 'terraform plan -out=tfplan -input=false'
+                sh 'cd terraform && ls -alh && terraform init'
+                sh 'ls -alh && terraform plan -out=tfplan -input=false'
                 sh 'terrafrom apply -lock=false -input=false tfplan'
             }
         }
