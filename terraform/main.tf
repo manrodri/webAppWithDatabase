@@ -4,7 +4,7 @@ provider "aws" {
   alias = "dublin"
 }
 
-resource "aws_instance" "staging server" {
+resource "aws_instance" "staging_server" {
 
   provider = "aws.dublin"
   ami = "ami-01e6a0b85de033c99"
