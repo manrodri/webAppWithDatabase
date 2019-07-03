@@ -37,7 +37,7 @@ pipeline {
                                         //removePrefix: 'dist/',
                                         //remoteDirectory: '/tmp',
                                         execCommand: """cd /tmp && curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -O http://54.72.240.241:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip && \
-                                                        unzip yelpCamp_${env.BUILD_NUMBER}.zip -d /tmp/app_${env.BUILD_NUMBER} > /dev/null && python3 /tmp/app_${env.BUILD_NUMBER}/run.py
+                                                        unzip yelpCamp_${env.BUILD_NUMBER}.zip -d /tmp/app_${env.BUILD_NUMBER} > /dev/null && python3 /tmp/app_${env.BUILD_NUMBER}/run.py app.js 3000 
                                                         """
 
                                         //execCommand: 'if [[ -e /tmp/run.sh ]] ; then rm -f /tmp/run.sh;  fi &&  unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh && ps aux | grep node',
