@@ -66,7 +66,7 @@ else:
   logger.error('No service running on port: {}'.format(args.port))
 
 # run the app
-cmd = "nohup node {}".format(args.entry_point)
+cmd = "nohup node {} &".format(args.entry_point)
 success, output, exit_code = execute_command_with_output(cmd, logger, message="Running release candiate")
 logger.debug('success: {}'.format(str(success)))
 logger.debug('output: {}'.format(str(output)))
