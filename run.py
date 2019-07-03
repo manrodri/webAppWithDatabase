@@ -67,6 +67,7 @@ else:
 
 # run the app
 cmd = "sudo nohup node {} > /tmp/yelpCamp.log &".format(args.entry_point)
+cmd = 'pwd && ls -alh'
 success, output, exit_code = execute_command_with_output(cmd, logger, message="Running release candiate")
 if success:
   logger.info('yelpCamp server started')
