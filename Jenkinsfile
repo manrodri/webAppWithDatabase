@@ -13,8 +13,8 @@ pipeline {
         // }
         // stage('publish to artifactory'){
         //     steps{ 
-        //         sh "curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -T dist/yelpCamp.zip http://54.72.240.241:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip"
-        //         //sh "curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -T dist/yelpCamp.zip http://54.72.240.241:8081/artifactory/generic-local/yelpCamp_run_${env.BUILD_NUMBER}.zip"
+        //         sh "curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -T dist/yelpCamp.zip http://artifactory.example.com:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip"
+        //         //sh "curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -T dist/yelpCamp.zip http://artifactory.example.com:8081/artifactory/generic-local/yelpCamp_run_${env.BUILD_NUMBER}.zip"
         //     }
         // }
 
@@ -55,9 +55,9 @@ pipeline {
         //                                 //sourceFiles: 'dist/yelpCamp*.zip',
         //                                 //removePrefix: 'dist/',
         //                                 //remoteDirectory: '/tmp',
-        //                                 execCommand: """cd /tmp && curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -O http://54.72.240.241:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip && \
+        //                                 execCommand: """cd /tmp && curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -O http://artifactory.example.com:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip && \
         //                                                 unzip yelpCamp_${env.BUILD_NUMBER}.zip -d /tmp/app_${env.BUILD_NUMBER} > /dev/null &&  \
-        //                                                 cd /tmp/app_${env.BUILD_NUMBER} &&  python run.py app.js 3000 
+        //                                                 cd /tmp/app_${env.BUILD_NUMBER} &&  python2 run.py app.js 3000 
         //                                                 """
 
         //                                 //execCommand: 'if [[ -e /tmp/run.sh ]] ; then rm -f /tmp/run.sh;  fi &&  unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh && ps aux | grep node',
