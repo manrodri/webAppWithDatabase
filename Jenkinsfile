@@ -31,15 +31,15 @@ pipeline {
             }
         }
         
-        stage('Destroy staging server'){
-            steps{
-                input 'Shall we destroy the staging server?'
-                milestone(1)
-                echo 'Destroying staging server'
-                sh 'cd terraform && terraform plan -destroy -out=tfdestroyplan -input=false'
-                sh "cd terraform && terraform apply -lock=false -input=false tfdestroyplan"
-            }
-        }
+        // stage('Destroy staging server'){
+        //     steps{
+        //         input 'Shall we destroy the staging server?'
+        //         milestone(1)
+        //         echo 'Destroying staging server'
+        //         sh 'cd terraform && terraform plan -destroy -out=tfdestroyplan -input=false'
+        //         sh "cd terraform && terraform apply -lock=false -input=false tfdestroyplan"
+        //     }
+        // }
 
         
         stage('Deploy to Production'){
