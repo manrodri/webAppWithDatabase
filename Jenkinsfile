@@ -26,7 +26,7 @@ pipeline {
         }
         
         stage('Run smoke test'){
-            steps{q
+            steps{
                 sh 'echo hello'
             }
         }
@@ -49,41 +49,41 @@ pipeline {
         }
 
 
-        // stage('DeployToStaging') { 
-        //     steps {
-        //         withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-        //             sshPublisher(
-        //                 failOnError: true,
-        //                 continueOnError: false,
-        //                 publishers: [
-        //                     sshPublisherDesc(
-        //                         configName: 'staging',
-        //                         sshCredentials: [
-        //                             username: "$USERNAME",
-        //                             encryptedPassphrase: "$USERPASS"
-        //                         ], 
-        //                         transfers: [
-        //                             sshTransfer(
-        //                                 //sourceFiles: 'dist/yelpCamp*.zip',
-        //                                 //removePrefix: 'dist/',
-        //                                 //remoteDirectory: '/tmp',
-        //                                 execCommand: """cd /tmp && curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -O http://artifactory.example.com:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip && \
-        //                                                 unzip yelpCamp_${env.BUILD_NUMBER}.zip -d /tmp/app_${env.BUILD_NUMBER} > /dev/null &&  \
-        //                                                 cd /tmp/app_${env.BUILD_NUMBER} &&  python2 run.py app.js 3000 
-        //                                                 """
+        stage('DeployToStaging') { 
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                    sshPublisher(
+                        failOnError: true,
+                        continueOnError: false,
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'staging',
+                                sshCredentials: [
+                                    username: "$USERNAME",
+                                    encryptedPassphrase: "$USERPASS"
+                                ], 
+                                transfers: [
+                                    sshTransfer(
+                                        //sourceFiles: 'dist/yelpCamp*.zip',
+                                        //removePrefix: 'dist/',
+                                        //remoteDirectory: '/tmp',
+                                        execCommand: """cd /tmp && curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -O http://artifactory.example.com:8081/artifactory/generic-local/yelpCamp.zip && \
+                                                        unzip yelpCamp.zip -d /tmp/app > /dev/null &&  \
+                                                        cd /tmp/app &&  nohup node /tmp/app.sh > /tmp/yelpCamp.log &  
+                                                        """
 
-        //                                 //execCommand: 'if [[ -e /tmp/run.sh ]] ; then rm -f /tmp/run.sh;  fi &&  unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh && ps aux | grep node',
-        //                                 //execTimeout: 10000
+                                        //execCommand: 'if [[ -e /tmp/run.sh ]] ; then rm -f /tmp/run.sh;  fi &&  unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh && ps aux | grep node',
+                                        //execTimeout: 10000
 
-        //                                 //execCommand: 'sudo /usr/bin/systemctl stop webAppUseCase.service && rm -rf /opt/webAppUseCase/* && unzip /tmp/app.zip -d /opt/webAppUseCase && sudo /usr/bin/systemctl start webAppUseCase'
-        //                             )
-        //                         ]
-        //                     )
-        //                 ]
-        //             )
-        //         }
-        //     }
-        // }
+                                        //execCommand: 'sudo /usr/bin/systemctl stop webAppUseCase.service && rm -rf /opt/webAppUseCase/* && unzip /tmp/app.zip -d /opt/webAppUseCase && sudo /usr/bin/systemctl start webAppUseCase'
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+                }
+            }
+        }
 
         // stage('DeployToProduction') {
         //     steps {
