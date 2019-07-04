@@ -41,13 +41,6 @@ pipeline {
         //     }
         // }
 
-        
-        stage('Deploy to Production'){
-            steps{
-                echo 'hello'
-            }
-        }
-
 
         stage('DeployToStaging') { 
             steps {
