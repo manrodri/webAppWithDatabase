@@ -1,22 +1,20 @@
 pipeline {
     agent any
     stages {
-        // stage('Build') {
-        //     steps {
-        //         echo env.BUILD_NUMBER
-        //         echo 'Running build automation'
-        //         sh './gradlew build build'
-        //         archiveArtifacts artifacts: "dist/yelpCamp.zip"
-        //         //archiveArtifacts artifacts: 'dist/yelpCamp_run.zip'
+        stage('Build') {
+            steps {
+                echo env.BUILD_NUMBER
+                echo 'Running build automation'
+                sh './gradlew build build'
+                archiveArtifacts artifacts: "dist/yelpCamp.zip"
                 
-        //     }
-        // }
-        // stage('publish to artifactory'){
-        //     steps{ 
-        //         sh "curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -T dist/yelpCamp.zip http://artifactory.example.com:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip"
-        //         //sh "curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -T dist/yelpCamp.zip http://artifactory.example.com:8081/artifactory/generic-local/yelpCamp_run_${env.BUILD_NUMBER}.zip"
-        //     }
-        // }
+            }
+        }
+        stage('publish to artifactory'){
+            steps{ 
+               sh "curl -uadmin:AP3diKiBWkp5uJvayFYXBLzFqe -T dist/yelpCamp.zip  http://34.248.149.177:8081/artifactory/generic-local/yelpCamp.zip"
+            }
+        }
 
         stage('Provision staging server'){
             steps{
@@ -26,7 +24,13 @@ pipeline {
                 sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
             }
         }
-
+        
+        stage('Run smoke test'){
+            steps{
+                sh 'echo hello'
+            }
+        }
+        
         stage('Destroy staging server'){
             steps{
                 input 'Shall we destroy the staging server?'
@@ -36,6 +40,14 @@ pipeline {
                 sh "cd terraform && terraform apply -lock=false -input=false tfdestroyplan"
             }
         }
+
+        
+        stage('Deploy to Production'){
+            steps{
+                echo 'hello'
+            }
+        }
+
 
         // stage('DeployToStaging') { 
         //     steps {

@@ -17,4 +17,17 @@ resource "aws_instance" "staging_server" {
     owner= "manuel",
     provisioned="terraform"
   }
+    provisioner "file" {
+    source      = "run.py"
+    destination = "/tmp/run.py"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "cd /tmp",
+      "curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -O http://artifactory.example.com:8081/artifactory/generic-local/yelpCamp.zip",
+      "unzip yelpCamp.zip -d /tmp/app > /dev/null",
+      "nohup node /tmp/app/bin/www"
+    ]
+  }
 }
