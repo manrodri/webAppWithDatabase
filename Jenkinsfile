@@ -26,7 +26,7 @@ pipeline {
         }
         
         stage('Run smoke test'){
-            steps{
+            steps{q
                 sh 'echo hello'
             }
         }
