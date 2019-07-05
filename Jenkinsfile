@@ -33,6 +33,7 @@ pipeline {
         
         stage('Deploy to staging server'){
             steps{
+                sh 'User: $(whoami)'
                 echo 'Deploying to staging server'
                 sh 'ssh jenkins@192.168.1.131'
                 sh 'echo hello > /tmp/test.txt'
