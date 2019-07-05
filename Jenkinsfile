@@ -31,6 +31,7 @@ pipeline {
             steps{
                 
                 echo 'Starting the app...'
+                sh 'sleep 60'
                 sh "ssh -tt  jenkins@192.168.1.240"
                 sh 'touch foobarknight.txt'
                 // sh 'node /tmp/yelpCampApp/bin/www'
