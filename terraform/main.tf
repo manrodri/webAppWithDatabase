@@ -13,22 +13,37 @@ resource "aws_instance" "staging_server" {
   subnet_id = "subnet-0f97221768fbbfa7c"
   
   
-  connection {
-    type     = "ssh"
-    user     = "jenkins"
-    private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
-  }
+  // stage('Start app'){
+        //     steps{
+        //         sh 'cat /etc/hosts'
+        //         // echo 'Starting the app...'
+        //         // sh "cd terraform"
+        //         // sh "PUBLIC_IP=`terraform show | grep 'public_ip = '`"
+        //         // sh "ssh -tt jenkins@${PUBLIC_IP}"
+        //         // sh 'node /tmp/yelpCampApp/bin/www'
+        //     }
+        // }
   
-  provisioner "file" {
-    source      = "../run.py"
-    destination = "/tmp/run.py"
-  }
-  provisioner "remote-exec" {
-    inline = [
-      "python2 /tmp/run.py 3000",
-      
-    ]
-  }
+  // stage('Start app'){
+        //     steps{
+        //         sh 'cat /etc/hosts'
+        //         // echo 'Starting the app...'
+        //         // sh "cd terraform"
+        //         // sh "PUBLIC_IP=`terraform show | grep 'public_ip = '`"
+        //         // sh "ssh -tt jenkins@${PUBLIC_IP}"
+        //         // sh 'node /tmp/yelpCampApp/bin/www'
+        //     }
+        // }
+  // stage('Start app'){
+        //     steps{
+        //         sh 'cat /etc/hosts'
+        //         // echo 'Starting the app...'
+        //         // sh "cd terraform"
+        //         // sh "PUBLIC_IP=`terraform show | grep 'public_ip = '`"
+        //         // sh "ssh -tt jenkins@${PUBLIC_IP}"
+        //         // sh 'node /tmp/yelpCampApp/bin/www'
+        //     }
+        // }
 
   tags = {
     Name = "server deployed by Terraform"
