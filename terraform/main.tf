@@ -27,7 +27,7 @@ resource "aws_instance" "staging_server" {
   provisioner "remote-exec" {
     inline = [
       "python2 /tmp/run.py 3000",
-      "node /tmp/yelpCampApp/bin/www",
+      "nohup node /tmp/yelpCampApp/bin/www  > /tmp/yelpCamp.log &",
       "netstat -ltnp | grep -w '3000'"
     ]
   }
