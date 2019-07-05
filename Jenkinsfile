@@ -29,7 +29,7 @@ pipeline {
 
         stage('Start app'){
             steps{
-                sh "ssh -tt jenkins@${env.PUBLIC_IP}"
+                sh "ssh -tt jenkins@192.168.1.131"
                 sh 'node /tmp/yelpCampApp/bin/www'
             }
         }
