@@ -17,10 +17,6 @@ resource "aws_instance" "staging_server" {
     private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
   }
   
-
-  provisioner "local-exec"{
-    command = "export PUBLIC_IP=${aws_instance.staging_server.public_ip}"
-  }
   provisioner "file" {
     source      = "../run.py"
     destination = "/tmp/run.py"
