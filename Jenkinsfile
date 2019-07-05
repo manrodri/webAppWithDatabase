@@ -27,16 +27,15 @@ pipeline {
         }
 
 
-        // stage('Start app'){
-        //     steps{
-        //         sh 'cat /etc/hosts'
-        //         // echo 'Starting the app...'
-        //         // sh "cd terraform"
-        //         // sh "PUBLIC_IP=`terraform show | grep 'public_ip = '`"
-        //         // sh "ssh -tt jenkins@${PUBLIC_IP}"
-        //         // sh 'node /tmp/yelpCampApp/bin/www'
-        //     }
-        // }
+        stage('Start app'){
+            steps{
+                
+                echo 'Starting the app...'
+                sh "ssh -tt -i /var/lib/jenkins/manuel_tech_case.pem jenkins@192.168.1.131"
+                sh 'touch foobarknight.txt'
+                // sh 'node /tmp/yelpCampApp/bin/www'
+            }
+        }
         
         // stage('Run smoke test'){
         //     steps{
