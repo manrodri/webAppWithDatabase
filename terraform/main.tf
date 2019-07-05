@@ -9,7 +9,7 @@ resource "aws_instance" "staging_server" {
   instance_type = "t2.micro"
   vpc_security_group_ids = ["sg-0b0afa51d47dcad45"]
   subnet_id = "subnet-0f97221768fbbfa7c"
-  private_ip = "192.168.1.131"
+  
   
   connection {
     type     = "ssh"
@@ -17,6 +17,9 @@ resource "aws_instance" "staging_server" {
     private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
   }
   
+  provisioner "local-exec" {
+    command = "\"sudo echo ${aws_instance.stage_server.private_ip} staging.example.com\" >> /etc/hosts"
+  }
   provisioner "file" {
     source      = "../run.py"
     destination = "/tmp/run.py"

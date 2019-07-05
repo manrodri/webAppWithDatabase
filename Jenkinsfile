@@ -29,11 +29,12 @@ pipeline {
 
         stage('Start app'){
             steps{
-                echo 'Starting the app...'
-                sh "cd terraform"
-                sh "PUBLIC_IP=`terraform show | grep 'public_ip = '`"
-                sh "ssh -tt jenkins@${PUBLIC_IP}"
-                sh 'node /tmp/yelpCampApp/bin/www'
+                sh 'cat /etc/hosts'
+                // echo 'Starting the app...'
+                // sh "cd terraform"
+                // sh "PUBLIC_IP=`terraform show | grep 'public_ip = '`"
+                // sh "ssh -tt jenkins@${PUBLIC_IP}"
+                // sh 'node /tmp/yelpCampApp/bin/www'
             }
         }
         
