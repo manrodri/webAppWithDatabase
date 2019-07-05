@@ -66,11 +66,23 @@ else:
   logger.error('No service running on port: {}'.format(args.port))
 
 
+# retrieve artifact from artifactory
+os.chdir('/tmp')
+cmd = 'curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -O http://34.244.56.79:8081/artifactory/generic-local/yelpCamp.zip'
+rc = execute_command_with_output(cmd, logger, message='Retrieving artifact')
+if not rc[0]:
+  logger.error(rc[1])
+  sys.exit(4)
+else:
+  logger.info('Artifact retrieved')
+
+
+
 # extract artifact
 path_to_zip_file = '/tmp/yelpCamp.zip'
 directory_to_extract_to = '/tmp/yelpCampApp/'
 
-with zipfile.ZipFile(path_to_zip_file,"r") as zip_ref:
+with ZipFile(path_to_zip_file,"r") as zip_ref:
     zip_ref.extractall(directory_to_extract_to)
 
 
