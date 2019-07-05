@@ -28,6 +28,7 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }));
+app.set('views', path.join(__dirname, 'views'));
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
