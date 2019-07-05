@@ -5,7 +5,7 @@ provider "aws" {
 }
 resource "aws_instance" "staging_server" {
 
-  ami = "ami-025ec0b13f60902a6"
+  ami = "ami-0a5efcfd56b6983c4"
   instance_type = "t2.micro"
   key_name      = "manuel_tech_case"
   private_ip = "192.168.1.240"
