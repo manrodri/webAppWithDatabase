@@ -7,9 +7,6 @@ variable "PRIVATE_IP" {
 variable "SUBNET_ID" {
   default = "subnet-0f97221768fbbfa7c"
 }
-variable "AMIS" {
-  type = "map"
-  default = {
-    eu-west-1 = "ami-025ec0b13f60902a6"
-  }
+variable "PATH_TO_PRIVATE_KEY" {
+  default = "/var/lib/jenkins/.ssh/id_rsa"
 }
