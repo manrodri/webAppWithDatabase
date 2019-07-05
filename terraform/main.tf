@@ -16,6 +16,10 @@ resource "aws_instance" "staging_server" {
     user     = "jenkins"
     private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
   }
+
+  provisioner "local-exec" {
+    command = "ls -alh"
+  }
   
   provisioner "file" {
     source      = "run.py"
