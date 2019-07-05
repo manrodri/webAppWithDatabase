@@ -26,7 +26,7 @@ resource "aws_instance" "staging_server" {
   }
   provisioner "remote-exec" {
     inline = [
-      "python2 /tmp/run.py app.js 3000"
+      "python2 /tmp/run.py 3000"
     ]
   }
 
