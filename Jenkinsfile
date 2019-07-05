@@ -34,7 +34,7 @@ pipeline {
         stage('Deploy to staging server'){
             steps{
                 echo 'Deploying to staging server'
-                sh 'ssh jenkins@192.168.1.131'
+                sh 'ssh -tt jenkins@192.168.1.131'
                 sh 'hostname'
                 sh """cd /tmp && curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -O http://34.244.56.79:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip && \
                                                         unzip yelpCamp.zip -d /tmp/app_${env.BUILD_NUMBER} > /dev/null &&  \
