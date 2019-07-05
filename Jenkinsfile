@@ -12,7 +12,7 @@ pipeline {
         }
         stage('publish to artifactory'){
             steps{ 
-               sh "curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -T dist/yelpCamp.zip http://34.244.56.79:8081/artifactory/generic-local/yelpCamp.zip"
+               sh "curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -T dist/yelpCamp.zip http://34.244.56.79:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip"
             }
         }
 
@@ -35,22 +35,23 @@ pipeline {
             steps{
                 echo 'Deploying to staging server'
                 sh 'ssh jenkins@192.168.1.131'
-                sh """cd /tmp && curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -O http://34.244.56.79:8081/artifactory/generic-local/yelpCamp.zip && \
-                                                        unzip yelpCamp.zip -d /tmp/app > /dev/null &&  \
-                                                        cd /tmp/app &&  nohup node /tmp/app.sh > /tmp/yelpCamp.log &  
+                sh 'hostname'
+                sh """cd /tmp && curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -O http://34.244.56.79:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip && \
+                                                        unzip yelpCamp.zip -d /tmp/app_${env.BUILD_NUMBER} > /dev/null &&  \
+                                                        cd /tmp/app_${env.BUILD_NUMBER} &&  nohup node app_${env.BUILD_NUMBER}/app.js > /tmp/yelpCamp.log &  
                                                         """
             }
         }
 
-        stage('Destroy staging server'){
-            steps{
-                input 'Shall we destroy the staging server?'
-                milestone(1)
-                echo 'Destroying staging server with Terraform'
-                sh 'cd terraform && terraform plan -destroy -out=tfdestroyplan -input=false'
-                sh "cd terraform && terraform apply -lock=false -input=false tfdestroyplan"
-            }
-        }
+        // stage('Destroy staging server'){
+        //     steps{
+        //         input 'Shall we destroy the staging server?'
+        //         milestone(1)
+        //         echo 'Destroying staging server with Terraform'
+        //         sh 'cd terraform && terraform plan -destroy -out=tfdestroyplan -input=false'
+        //         sh "cd terraform && terraform apply -lock=false -input=false tfdestroyplan"
+        //     }
+        // }
 
         // stage('Destroy staging server'){
         //     steps{
