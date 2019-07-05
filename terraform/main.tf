@@ -18,11 +18,11 @@ resource "aws_instance" "staging_server" {
   }
 
   provisioner "local-exec" {
-    command = "ls -alh"
+    command = "ls ../run.py"
   }
   
   provisioner "file" {
-    source      = "run.py"
+    source      = "../run.py"
     destination = "/tmp/run.py"
   }
   provisioner "remote-exec" {
