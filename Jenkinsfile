@@ -42,6 +42,14 @@ pipeline {
             }
         }
 
+        stage('Destroy staging server'){
+            steps{
+                echo 'Destroying staging server with Terraform'
+                sh 'cd terraform && terraform plan -destroy -out=tfdestroyplan -input=false'
+                sh "cd terraform && terraform apply -lock=false -input=false tfdestroyplan"
+            }
+        }
+
         // stage('Destroy staging server'){
         //     steps{
         //         input 'Shall we destroy the staging server?'
