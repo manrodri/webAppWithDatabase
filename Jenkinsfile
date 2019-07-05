@@ -35,7 +35,10 @@ pipeline {
             steps{
                 echo 'Deploying to staging server'
                 sh 'ssh jenkins@192.168.1.131'
-                sh 'echo hello > /tmp/test.txt'
+                sh """cd /tmp && curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -O http://34.244.56.79:8081/artifactory/generic-local/yelpCamp.zip && \
+                                                        unzip yelpCamp.zip -d /tmp/app > /dev/null &&  \
+                                                        cd /tmp/app &&  nohup node /tmp/app.sh > /tmp/yelpCamp.log &  
+                                                        """
             }
         }
 
@@ -68,10 +71,10 @@ pipeline {
         //                                 //sourceFiles: 'dist/yelpCamp*.zip',
         //                                 //removePrefix: 'dist/',
         //                                 //remoteDirectory: '/tmp',
-        //                                 execCommand: """cd /tmp && curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -O http://34.244.56.79:8081/artifactory/generic-local/yelpCamp.zip && \
-        //                                                 unzip yelpCamp.zip -d /tmp/app > /dev/null &&  \
-        //                                                 cd /tmp/app &&  nohup node /tmp/app.sh > /tmp/yelpCamp.log &  
-        //                                                 """
+                                        // execCommand: """cd /tmp && curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -O http://34.244.56.79:8081/artifactory/generic-local/yelpCamp.zip && \
+                                        //                 unzip yelpCamp.zip -d /tmp/app > /dev/null &&  \
+                                        //                 cd /tmp/app &&  nohup node /tmp/app.sh > /tmp/yelpCamp.log &  
+                                        //                 """
 
         //                                 //execCommand: 'if [[ -e /tmp/run.sh ]] ; then rm -f /tmp/run.sh;  fi &&  unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh && ps aux | grep node',
         //                                 //execTimeout: 10000
