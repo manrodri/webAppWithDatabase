@@ -65,8 +65,17 @@ if rc[1]:
 else:
   logger.error('No service running on port: {}'.format(args.port))
 
+
+# extract artifact
+path_to_zip_file = '/tmp/yelpCamp.zip'
+directory_to_extract_to = '/tmp/yelpCampApp/'
+
+with zipfile.ZipFile(path_to_zip_file,"r") as zip_ref:
+    zip_ref.extractall(directory_to_extract_to)
+
+
 # run the app
-cmd = "nohup node {} > /tmp/yelpCamp.log &".format(args.entry_point)
+cmd = "nohup node {} > /tmp/yelpCamp.log &".format(directory_to_extract_to + args.entry_point)
 success, output, exit_code = execute_command_with_output(cmd, logger, message="Running release candiate")
 logger.debug('success: {}'.format(str(success)))
 logger.debug('output: {}'.format(str(output)))

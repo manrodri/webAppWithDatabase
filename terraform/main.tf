@@ -17,13 +17,17 @@ resource "aws_instance" "staging_server" {
     private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
   }
 
+  provisioner "local-exec" {
+    command = "echo ${aws_instance.web.private_ip} >> private_ips.txt"
+  }
+  
   provisioner "file" {
-    source      = "run.sh"
-    destination = "/tmp/run.sh"
+    source      = "run.py"
+    destination = "/tmp/run.py"
   }
   provisioner "remote-exec" {
     inline = [
-      "sh /tmp/run.sh"
+      "python2 /tmp/run.py app.js 3000"
     ]
   }
 
