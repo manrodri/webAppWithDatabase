@@ -18,7 +18,7 @@ resource "aws_instance" "staging_server" {
   }
 
   provisioner "file" {
-    source      = "../run.sh"
+    source      = "run.sh"
     destination = "/tmp/run.sh"
   }
   provisioner "remote-exec" {
