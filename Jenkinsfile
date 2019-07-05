@@ -31,7 +31,7 @@ pipeline {
             steps{
                 
                 echo 'Starting the app...'
-                sh "ssh -tt -i /var/lib/jenkins/manuel_tech_case.pem jenkins@192.168.1.131"
+                sh "ssh -tt -i /var/lib/jenkins/manuel_tech_case.pem jenkins@192.168.1.240"
                 sh 'touch foobarknight.txt'
                 // sh 'node /tmp/yelpCampApp/bin/www'
             }
