@@ -93,5 +93,7 @@ logger.debug('success: {}'.format(str(success)))
 logger.debug('output: {}'.format(str(output)))
 logger.debug('exit_code: {}'.format(str(exit_code)))
 if success:
-  logger.info('yelpCamp server started')
+    cmd = "netstat -ltnp | grep -w ':{}'".format(int(args.port))
+    rc = execute_command_with_output(cmd, logger, message="Running: {}".format(cmd), show_output=True)
+    logger.info(rc[1])
 
