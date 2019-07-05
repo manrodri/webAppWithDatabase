@@ -29,7 +29,7 @@ pipeline {
 
         stage('Start app'){
             steps{
-                sh "cd terraform &&  terraform show"
+                sh "cd terraform &&  PUBLIC_IP=`terraform show | grep 'public_ip = '`"
                 sh "ssh -tt jenkins@${PUBLIC_IP}"
                 sh 'node /tmp/yelpCampApp/bin/www'
             }
