@@ -86,13 +86,16 @@ with ZipFile(path_to_zip_file,"r") as zip_ref:
 
 
 # run the app
-cmd = "./bin/www"
+cmd = "sh  /tmp/yelpCampApp/bin/www"
 success, output, exit_code = execute_command_with_output(cmd, logger, message="Running release candiate")
 logger.debug('success: {}'.format(str(success)))
 logger.debug('output: {}'.format(str(output)))
 logger.debug('exit_code: {}'.format(str(exit_code)))
-if success:
+if exit_code:
     cmd = "netstat -ltnp | grep -w ':{}'".format(int(args.port))
     rc = execute_command_with_output(cmd, logger, message="Running: {}".format(cmd), show_output=True)
     logger.info(rc[1])
+else:
+  logger.error(output)
+  sys.exit(exit_code)
 
