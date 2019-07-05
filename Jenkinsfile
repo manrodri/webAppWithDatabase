@@ -66,7 +66,7 @@ pipeline {
 
         stage('DeployToStaging') { 
             steps {
-                withCredentials([usernamePassword(credentialsId: 'jenkins_web_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                withCredentials([usernamePassword(credentialsId: 'web_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     sshPublisher(
                         failOnError: true,
                         continueOnError: false,
