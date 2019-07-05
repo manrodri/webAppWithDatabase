@@ -9,7 +9,6 @@ import argparse
 # build parser and parse arguments
 parser = argparse.ArgumentParser(description='command line tool to kill a previuous version and deploy new release candidate')
 
-parser.add_argument('entry_point', help='entry point for node application')
 parser.add_argument('port', help='port node application is running')
 parser.add_argument('--version', '-v', action='version', version='%(prog)s 1.0')
 parser.add_argument('--debug', action='store_true')
@@ -87,7 +86,7 @@ with ZipFile(path_to_zip_file,"r") as zip_ref:
 
 
 # run the app
-cmd = "nohup node {} > /tmp/yelpCamp.log &".format(directory_to_extract_to + args.entry_point)
+cmd = "./bin/www"
 success, output, exit_code = execute_command_with_output(cmd, logger, message="Running release candiate")
 logger.debug('success: {}'.format(str(success)))
 logger.debug('output: {}'.format(str(output)))
