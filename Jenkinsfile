@@ -22,6 +22,16 @@ pipeline {
                 sh 'cd terraform && terraform init'
                 sh 'cd terraform && terraform plan -out=tfplan -input=false'
                 sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
+
+            }
+        }
+
+
+        stage('Start app'){
+            steps{
+                sh "public ip is: echo ${PUBLIC_IP}"
+                sh 'ssh -tt jenkins 192.168.1.131'
+                sh 'node /tmp/yelpCampApp/bin/www'
             }
         }
         

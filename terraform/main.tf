@@ -9,6 +9,7 @@ resource "aws_instance" "staging_server" {
   instance_type = "t2.micro"
   vpc_security_group_ids = ["sg-0b0afa51d47dcad45"]
   subnet_id = "subnet-0f97221768fbbfa7c"
+  private_ip = "192.168.1.131"
   
   connection {
     type     = "ssh"
@@ -18,7 +19,7 @@ resource "aws_instance" "staging_server" {
   
 
   provisioner "local-exec"{
-    command = "echo ${aws_instance.staging_server.public_ip}"
+    command = "export PUBLIC_IP=${aws_instance.staging_server.public_ip}"
   }
   provisioner "file" {
     source      = "../run.py"
@@ -26,8 +27,7 @@ resource "aws_instance" "staging_server" {
   }
   provisioner "remote-exec" {
     inline = [
-      "python2 /tmp/run.py 3000",
-      "node /tmp/yelpCampApp/bin/www  &"
+      "python2 /tmp/run.py 3000"
     ]
   }
 
