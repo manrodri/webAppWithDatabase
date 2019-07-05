@@ -7,6 +7,7 @@ var express     = require("express"),
     methodOverride = require('method-override'),
     User        = require("./models/user");
     seedDB      = require("./seeds"),
+    path        = require('path'),
     port        = 3000;
 
 var commentsRoutes      = require('./routes/comments'),
