@@ -18,9 +18,6 @@ resource "aws_instance" "staging_server" {
     private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
   }
   
-  provisioner "local-exec" {
-    command = "\"sudo echo ${aws_instance.staging_server.private_ip} staging.example.com\" >> /etc/hosts"
-  }
   provisioner "file" {
     source      = "../run.py"
     destination = "/tmp/run.py"

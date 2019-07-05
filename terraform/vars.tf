@@ -8,5 +8,5 @@ variable "SUBNET_ID" {
   default = "subnet-0f97221768fbbfa7c"
 }
 variable "PATH_TO_PRIVATE_KEY" {
-  default = "/var/lib/jenkins/.ssh/id_rsa"
+  default = "/var/lib/jenkins/.ssh/manuel_tech_case.pem"
 }
