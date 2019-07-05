@@ -12,7 +12,7 @@ pipeline {
         }
         stage('publish to artifactory'){
             steps{ 
-               sh "curl -uadmin:AP3diKiBWkp5uJvayFYXBLzFqe -T dist/yelpCamp.zip  http://34.248.149.177:8081/artifactory/generic-local/yelpCamp.zip"
+               sh "curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -T dist/yelpCamp.zip http://34.244.56.79:8081/artifactory/generic-local/yelpCamp.zip"
             }
         }
 
@@ -31,6 +31,14 @@ pipeline {
             }
         }
         
+        stage('Deploy to staging server'){
+            steps{
+                echo 'Deploying to staging server'
+                sh 'ssh jenkins@192.168.1.131'
+                sh 'echo hello > /tmp/test.txt'
+            }
+        }
+
         // stage('Destroy staging server'){
         //     steps{
         //         input 'Shall we destroy the staging server?'
@@ -42,42 +50,43 @@ pipeline {
         // }
 
 
-        stage('DeployToStaging') { 
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-                    sshPublisher(
-                        failOnError: true,
-                        continueOnError: false,
-                        publishers: [
-                            sshPublisherDesc(
-                                configName: 'staging',
-                                sshCredentials: [
-                                    username: "$USERNAME",
-                                    encryptedPassphrase: "$USERPASS"
-                                ], 
-                                transfers: [
-                                    sshTransfer(
-                                        //sourceFiles: 'dist/yelpCamp*.zip',
-                                        //removePrefix: 'dist/',
-                                        //remoteDirectory: '/tmp',
-                                        execCommand: """cd /tmp && curl -uadmin:APkvALzx9a7Ygn2kQ17Bcn7BU4 -O http://artifactory.example.com:8081/artifactory/generic-local/yelpCamp.zip && \
-                                                        unzip yelpCamp.zip -d /tmp/app > /dev/null &&  \
-                                                        cd /tmp/app &&  nohup node /tmp/app.sh > /tmp/yelpCamp.log &  
-                                                        """
+        // stage('DeployToStaging') { 
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+        //             sshPublisher(
+        //                 failOnError: true,
+        //                 continueOnError: false,
+        //                 publishers: [
+        //                     sshPublisherDesc(
+        //                         configName: 'staging',
+        //                         sshCredentials: [
+        //                             username: "$USERNAME",
+        //                             encryptedPassphrase: "$USERPASS"
+        //                         ], 
+        //                         transfers: [
+        //                             sshTransfer(
+        //                                 //sourceFiles: 'dist/yelpCamp*.zip',
+        //                                 //removePrefix: 'dist/',
+        //                                 //remoteDirectory: '/tmp',
+        //                                 execCommand: """cd /tmp && curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -O http://34.244.56.79:8081/artifactory/generic-local/yelpCamp.zip && \
+        //                                                 unzip yelpCamp.zip -d /tmp/app > /dev/null &&  \
+        //                                                 cd /tmp/app &&  nohup node /tmp/app.sh > /tmp/yelpCamp.log &  
+        //                                                 """
 
-                                        //execCommand: 'if [[ -e /tmp/run.sh ]] ; then rm -f /tmp/run.sh;  fi &&  unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh && ps aux | grep node',
-                                        //execTimeout: 10000
+        //                                 //execCommand: 'if [[ -e /tmp/run.sh ]] ; then rm -f /tmp/run.sh;  fi &&  unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh && ps aux | grep node',
+        //                                 //execTimeout: 10000
 
-                                        //execCommand: 'sudo /usr/bin/systemctl stop webAppUseCase.service && rm -rf /opt/webAppUseCase/* && unzip /tmp/app.zip -d /opt/webAppUseCase && sudo /usr/bin/systemctl start webAppUseCase'
-                                    )
-                                ]
-                            )
-                        ]
-                    )
-                }
-            }
-        }
+        //                                 //execCommand: 'sudo /usr/bin/systemctl stop webAppUseCase.service && rm -rf /opt/webAppUseCase/* && unzip /tmp/app.zip -d /opt/webAppUseCase && sudo /usr/bin/systemctl start webAppUseCase'
+        //                             )
+        //                         ]
+        //                     )
+        //                 ]
+        //             )
+        //         }
+        //     }
+        // }
 
+        
         // stage('DeployToProduction') {
         //     steps {
         //         input 'Does the staging environment look OK?'
