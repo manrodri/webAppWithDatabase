@@ -26,6 +26,13 @@ pipeline {
 
             }
         }
+        stage('Build docker image'){
+            steps{
+                sh "mkdir /tmp/app_${env.BUILD_NUMBER} && cd /tmp/app_${env.BUILD_NUMBER}"
+                sh "unzip dist/yelpCamp.zip -d /tmp/app_${env.BUILD_NUMBER}"
+                sh 'docker build -t manrodri/yelpcamp .'
+            }
+        }
 
         // stage('Run App'){
         //     steps{
