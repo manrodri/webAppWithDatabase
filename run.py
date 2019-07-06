@@ -85,17 +85,3 @@ with ZipFile(path_to_zip_file,"r") as zip_ref:
     zip_ref.extractall(directory_to_extract_to)
 
 
-# # run the app
-# cmd = "sh  /tmp/yelpCampApp/bin/www.sh"
-# success, output, exit_code = execute_command_with_output(cmd, logger, message="Running release candiate")
-# logger.debug('success: {}'.format(str(success)))
-# logger.debug('output: {}'.format(str(output)))
-# logger.debug('exit_code: {}'.format(str(exit_code)))
-# if success:
-#     cmd = "netstat -ltnp | grep -w ':{}'".format(int(args.port))
-#     rc = execute_command_with_output(cmd, logger, message="Running: {}".format(cmd), show_output=True)
-#     logger.info(rc[1])
-# else:
-#   logger.error(output)
-#   sys.exit(exit_code)
-
