@@ -6,13 +6,13 @@ pipeline {
                 echo env.BUILD_NUMBER
                 echo 'Running build automation'
                 sh './webApp/gradlew build'
-                archiveArtifacts artifacts: "webApp/dist/yelpCamp.zip"
+                archiveArtifacts artifacts: "dist/yelpCamp.zip"
                 
             }
         }
         stage('publish to artifactory'){
             steps{ 
-               sh "curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -T webApp/dist/yelpCamp.zip http://34.244.56.79:8081/artifactory/generic-local/yelpCamp.zip"
+               sh "curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -T dist/yelpCamp.zip http://34.244.56.79:8081/artifactory/generic-local/yelpCamp.zip"
             }
         }
 
