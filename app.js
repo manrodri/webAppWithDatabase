@@ -7,7 +7,6 @@ var express     = require("express"),
     methodOverride = require('method-override'),
     User        = require("./models/user");
     seedDB      = require("./seeds"),
-    path        = require('path'),
     port        = 3000;
 
 var commentsRoutes      = require('./routes/comments'),
@@ -29,7 +28,6 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }));
-app.set('views', path.join(__dirname, 'views'));
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -40,4 +38,6 @@ app.use(indexRoutes);
 app.use('/campgrounds', campgroundsRoutes);
 app.use('/campgrounds/:id/comments', commentsRoutes);
 
-module.exports = app;
+app.listen(port, function(){
+    console.log("The YelpCamp Server Has Started!");
+ });

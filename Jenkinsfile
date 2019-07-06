@@ -26,17 +26,6 @@ pipeline {
             }
         }
 
-
-        stage('Start app'){
-            steps{
-                
-                echo 'Starting the app...'
-                sh 'sleep 60'
-                sh "ssh -tt  jenkins@192.168.1.240"
-                sh 'touch foobarknight.txt'
-                // sh 'node /tmp/yelpCampApp/bin/www'
-            }
-        }
         
         // stage('Run smoke test'){
         //     steps{
@@ -77,41 +66,40 @@ pipeline {
         // }
 
 
-        // stage('DeployToStaging') { 
-        //     steps {
-        //         withCredentials([usernamePassword(credentialsId: 'web_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-        //             sshPublisher(
-        //                 failOnError: true,
-        //                 continueOnError: false,
-        //                 publishers: [
-        //                     sshPublisherDesc(
-        //                         configName: 'staging',
-        //                         sshCredentials: [
-        //                             username: "$USERNAME",
-        //                             encryptedPassphrase: "$USERPASS"
-        //                         ], 
-        //                         transfers: [
-        //                             sshTransfer(
-        //                                 //sourceFiles: 'dist/yelpCamp*.zip',
-        //                                 //removePrefix: 'dist/',
-        //                                 //remoteDirectory: '/tmp',
-        //                                 execCommand: """cd /tmp && curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -O http://34.244.56.79:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip && \
-        //                                                 unzip yelpCamp_${env.BUILD_NUMBER}.zip -d /tmp/app_${env.BUILD_NUMBER} > /dev/null &&  \
-        //                                                 cd /tmp/app_${env.BUILD_NUMBER} &&  nohup node /tmp/app_${env.BUILD_NUMBER}/app.sh > /tmp/yelpCamp.log &  
-        //                                                 """
+        stage('DeployToStaging') { 
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                    sshPublisher(
+                        failOnError: true,
+                        continueOnError: false,
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'staging',
+                                sshCredentials: [
+                                    username: "$USERNAME",
+                                    encryptedPassphrase: "$USERPASS"
+                                ], 
+                                transfers: [
+                                    sshTransfer(
+                                        //sourceFiles: 'dist/yelpCamp*.zip',
+                                        //removePrefix: 'dist/',
+                                        //remoteDirectory: '/tmp',
+                                        execCommand: """
+                                                          nohup node /tmp/app/app.sh > /tmp/yelpCamp.log &  
+                                                        """
 
-        //                                 //execCommand: 'if [[ -e /tmp/run.sh ]] ; then rm -f /tmp/run.sh;  fi &&  unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh && ps aux | grep node',
-        //                                 //execTimeout: 10000
+                                        //execCommand: 'if [[ -e /tmp/run.sh ]] ; then rm -f /tmp/run.sh;  fi &&  unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh && ps aux | grep node',
+                                        //execTimeout: 10000
 
-        //                                 //execCommand: 'sudo /usr/bin/systemctl stop webAppUseCase.service && rm -rf /opt/webAppUseCase/* && unzip /tmp/app.zip -d /opt/webAppUseCase && sudo /usr/bin/systemctl start webAppUseCase'
-        //                             )
-        //                         ]
-        //                     )
-        //                 ]
-        //             )
-        //         }
-        //     }
-        // }
+                                        //execCommand: 'sudo /usr/bin/systemctl stop webAppUseCase.service && rm -rf /opt/webAppUseCase/* && unzip /tmp/app.zip -d /opt/webAppUseCase && sudo /usr/bin/systemctl start webAppUseCase'
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+                }
+            }
+        }
 
         
         // stage('DeployToProduction') {
