@@ -25,7 +25,7 @@ pipeline {
                 sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
 
             }
-        // }
+        }
 
         // stage('Run App'){
         //     steps{
