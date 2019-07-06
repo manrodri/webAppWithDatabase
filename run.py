@@ -35,7 +35,7 @@ def execute_command_with_output(command, log, message=None, show_output=True):
     exec_output, exec_err = proc.communicate()
     if show_output:
         log.info("%s\n%s" % (exec_output, exec_err))
-        print "%s" % exec_output
+        print ("%s" % exec_output)
     if proc.returncode == 0:
         return True, exec_output, proc.returncode
     else:
