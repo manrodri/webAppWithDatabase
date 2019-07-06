@@ -1,0 +1,8 @@
+[all:vars]
+
+[mongo-test]
+63.32.91.99 ansible_user=manuel  ansible_python_interpreter="/usr/bin/env python"
+
+
+
+

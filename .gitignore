@@ -1,5 +1,5 @@
-.gradle
-dist
+webApp/.gradle
+webApp/dist
 smokeTest/*.pyc
 smokeTest/__*
 
@@ -9,3 +9,8 @@ smokeTest/__*
 # .tfstate files
 *.tfstate
 *.tfstate.*
+
+**.retry
+ansible/dockerpass.txt
+.DS_Store
+**.pem

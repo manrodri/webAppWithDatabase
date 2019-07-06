@@ -1,0 +1,26 @@
+- hosts: localhost
+  become: yes
+  become_user: root
+  connection: local
+  gather_facts: false
+
+  tasks:
+  - name: Ensure pre-requisite python package for ec2 module of Ansible
+    apt: name={{ item }} update_cache=yes state=latest
+    with_items: 
+    - python-pip
+  
+  - name: Install boto library
+    pip: name=boto
+  
+  - name: Provision EC2 instance
+    ec2: 
+      key_name: "manuel_tech_case"
+      instance_type: "t2.micro"
+      image: "ami-00e410f11180553ef"
+      vpc_subnet_id: subnet-0f97221768fbbfa7c
+      wait: true
+      count: 1
+      region: 'eu-west-1'
+      aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+      aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
