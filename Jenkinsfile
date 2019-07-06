@@ -5,8 +5,8 @@ pipeline {
             steps {
                 echo env.BUILD_NUMBER
                 echo 'Running build automation'
-                sh 'cd webApp'
-                sh '.gradlew build'
+    
+                sh './gradlew build build'
                 archiveArtifacts artifacts: "dist/yelpCamp.zip"
                 
             }
