@@ -5,32 +5,32 @@ pipeline {
             steps {
                 echo env.BUILD_NUMBER
                 echo 'Running build automation'
-                sh './gradlew build build'
-                archiveArtifacts artifacts: "dist/yelpCamp.zip"
+                sh './webApp/gradlew build'
+                archiveArtifacts artifacts: "webApp/dist/yelpCamp.zip"
                 
             }
         }
         stage('publish to artifactory'){
             steps{ 
-               sh "curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -T dist/yelpCamp.zip http://34.244.56.79:8081/artifactory/generic-local/yelpCamp.zip"
+               sh "curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -T webApp/dist/yelpCamp.zip http://34.244.56.79:8081/artifactory/generic-local/yelpCamp.zip"
             }
         }
 
-        stage('Provision staging server'){
-            steps{
-                echo 'Provisioning staging server with Terraform'
-                sh 'cd terraform && terraform init'
-                sh 'cd terraform && terraform plan -out=tfplan -input=false'
-                sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
+        // stage('Provision staging server'){
+        //     steps{
+        //         echo 'Provisioning staging server with Terraform'
+        //         sh 'cd terraform && terraform init'
+        //         sh 'cd terraform && terraform plan -out=tfplan -input=false'
+        //         sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
 
-            }
-        }
+        //     }
+        // }
 
-        stage('Run App'){
-            steps{
-                sh "sshpass -p ${env.SSH_PASS} -o StrictHostChecking=no deploy@${env.STAGING_SERVER_IP} node /tmp/app/app.js"
-            }
-        }
+        // stage('Run App'){
+        //     steps{
+        //         sh "sshpass -p ${env.SSH_PASS} -o StrictHostChecking=no deploy@${env.STAGING_SERVER_IP} node /tmp/app/app.js"
+        //     }
+        // }
 
         
         // stage('Run smoke test'){
