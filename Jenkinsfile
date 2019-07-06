@@ -30,7 +30,7 @@ pipeline {
             steps{
                 sh "mkdir /tmp/app_${env.BUILD_NUMBER} && cd /tmp/app_${env.BUILD_NUMBER}"
                 sh "unzip dist/yelpCamp.zip -d /tmp/app_${env.BUILD_NUMBER}"
-                sh 'docker build -t manrodri/yelpcamp .'
+                sh 'sudo docker build -t manrodri/yelpcamp .'
             }
         }
 
