@@ -26,6 +26,12 @@ pipeline {
             }
         }
 
+        stage('Run App'){
+            steps{
+                sh "sshpass -p ${env.SSH_PASS} -o StrictHostChecking=no deploy@${env.STAGING_SERVER_IP} node /tmp/app/app.js"
+            }
+        }
+
         
         // stage('Run smoke test'){
         //     steps{
@@ -66,40 +72,40 @@ pipeline {
         // }
 
 
-        stage('DeployToStaging') { 
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-                    sshPublisher(
-                        failOnError: true,
-                        continueOnError: false,
-                        publishers: [
-                            sshPublisherDesc(
-                                configName: 'staging',
-                                sshCredentials: [
-                                    username: "$USERNAME",
-                                    encryptedPassphrase: "$USERPASS"
-                                ], 
-                                transfers: [
-                                    sshTransfer(
-                                        //sourceFiles: 'dist/yelpCamp*.zip',
-                                        //removePrefix: 'dist/',
-                                        //remoteDirectory: '/tmp',
-                                        execCommand: """
-                                                          nohup node /tmp/app/app.sh > /tmp/yelpCamp.log &  
-                                                        """
+        // stage('DeployToStaging') { 
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+        //             sshPublisher(
+        //                 failOnError: true,
+        //                 continueOnError: false,
+        //                 publishers: [
+        //                     sshPublisherDesc(
+        //                         configName: 'staging',
+        //                         sshCredentials: [
+        //                             username: "$USERNAME",
+        //                             encryptedPassphrase: "$USERPASS"
+        //                         ], 
+        //                         transfers: [
+        //                             sshTransfer(
+        //                                 //sourceFiles: 'dist/yelpCamp*.zip',
+        //                                 //removePrefix: 'dist/',
+        //                                 //remoteDirectory: '/tmp',
+        //                                 execCommand: """
+        //                                                   nohup node /tmp/app/app.sh > /tmp/yelpCamp.log &  
+        //                                                 """
 
-                                        //execCommand: 'if [[ -e /tmp/run.sh ]] ; then rm -f /tmp/run.sh;  fi &&  unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh && ps aux | grep node',
-                                        //execTimeout: 10000
+        //                                 //execCommand: 'if [[ -e /tmp/run.sh ]] ; then rm -f /tmp/run.sh;  fi &&  unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh && ps aux | grep node',
+        //                                 //execTimeout: 10000
 
-                                        //execCommand: 'sudo /usr/bin/systemctl stop webAppUseCase.service && rm -rf /opt/webAppUseCase/* && unzip /tmp/app.zip -d /opt/webAppUseCase && sudo /usr/bin/systemctl start webAppUseCase'
-                                    )
-                                ]
-                            )
-                        ]
-                    )
-                }
-            }
-        }
+        //                                 //execCommand: 'sudo /usr/bin/systemctl stop webAppUseCase.service && rm -rf /opt/webAppUseCase/* && unzip /tmp/app.zip -d /opt/webAppUseCase && sudo /usr/bin/systemctl start webAppUseCase'
+        //                             )
+        //                         ]
+        //                     )
+        //                 ]
+        //             )
+        //         }
+        //     }
+        // }
 
         
         // stage('DeployToProduction') {
