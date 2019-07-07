@@ -1,6 +1,8 @@
 ---
 # tasks file for mongoDB setup
 
+- name: Kill apt rougue process
+  shell: killall apt-get || true
 
 - name: install mongoDB
   apt: 
