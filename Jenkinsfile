@@ -20,9 +20,9 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    app = docker.build("manrodri/yelpCamp")
+                    app = docker.build("manrodri/yelpcamp")
                     app.inside {
-                        sh 'echo $(curl localhost:8080)'
+                        sh 'echo $(curl localhost:3000)'
                     }
                 }
             }
