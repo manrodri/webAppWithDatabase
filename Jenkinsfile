@@ -139,62 +139,29 @@ pipeline {
         //     }
         // }
 
+        
+
+
+        
         stage('DeployToProduction') {
-              
             steps {
                 input 'Does the staging environment look OK?'
                 milestone(1)
                 withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-                    script {
-                       
+                    script{
                         sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker pull manrodri/yelpcamp:${env.BUILD_NUMBER}\""
-                        
-                        try {
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker run --restart always --name yelpCamp -p 3000:3000 -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
+                        try{
                             sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker stop yelpCamp\""
                             sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker rm yelpCamp\""
-                        } catch (err) {
+                        } catch{
+                            
                             echo: 'caught error: $err'
                         }
                         sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker run --restart always --name yelpCamp -p 3000:3000 -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
+
                     }
                 }
             }
         }
-    }
-
-
-
-        // stage('DeployToProduction') {
-        //     steps {
-        //         input 'Does the staging environment look OK?'
-        //         milestone(1)
-        //         withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-        //             sshPublisher(
-        //                 failOnError: true,
-        //                 continueOnError: false,
-        //                 publishers: [
-        //                     sshPublisherDesc(
-        //                         configName: 'production',
-        //                         sshCredentials: [
-        //                             username: "$USERNAME",
-        //                             encryptedPassphrase: "$USERPASS"
-        //                         ], 
-        //                         transfers: [
-        //                             sshTransfer(
-        //                                 sourceFiles:'dist/yelpCamp*.zip',
-        //                                 removePrefix: 'dist/',
-        //                                 remoteDirectory: '/tmp',
-        //                                 execCommand: 'if [[ -e /tmp/run.sh ]] ; then rm -f /tmp/run.sh;  fi &&  unzip /tmp/yelpCamp_run.zip -d /tmp &&  sh /tmp/run.sh && ps aux | grep node',
-        //                                 execTimeout: 10000
-        //                                 //execCommand: 'sudo /usr/bin/systemctl stop webAppUseCase.service && rm -rf /opt/webAppUseCase/* && unzip /tmp/app.zip -d /opt/webAppUseCase && sudo /usr/bin/systemctl start webAppUseCase'
-        //                             )
-        //                         ]
-        //                     )
-        //                 ]
-        //             )
-        //         }
-        //     }
-        // }
     }
 }
