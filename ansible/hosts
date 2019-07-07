@@ -1,7 +1,7 @@
 [all:vars]
 
 [mongo-test]
-192.168.1.241 ansible_user=deploy  ansible_python_interpreter="/usr/bin/env python"
+192.168.1.241 ansible_user=jenkins  ansible_python_interpreter="/usr/bin/env python"
 
 
 
