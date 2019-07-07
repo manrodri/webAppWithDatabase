@@ -17,13 +17,37 @@ pipeline {
             }
         }
 
-        stage('Build docker image'){
-            steps{
-                sh "mkdir /tmp/app_${env.BUILD_NUMBER} && cd /tmp/app_${env.BUILD_NUMBER}"
-                sh "unzip dist/yelpCamp.zip -d /tmp/app_${env.BUILD_NUMBER}"
-                sh 'sudo docker build -t manrodri/yelpcamp .'
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    app = docker.build("manrodri/yelpCamp")
+                    app.inside {
+                        sh 'echo $(curl localhost:8080)'
+                    }
+                }
             }
         }
+
+        stage('Push Docker Image') {
+            
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'DockerHub') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
+                }
+            }
+        }
+
+        // stage('Build docker image'){
+        //     steps{
+        //         sh "mkdir /tmp/app_${env.BUILD_NUMBER} && cd /tmp/app_${env.BUILD_NUMBER}"
+        //         sh "unzip dist/yelpCamp.zip -d /tmp/app_${env.BUILD_NUMBER}"
+        //         sh 'sudo docker build -t manrodri/yelpcamp .'
+        //     }
+        // }
+
 
         stage('Provision staging server'){
             steps{
@@ -35,6 +59,7 @@ pipeline {
             }
         }
         
+
 
         // stage('Run App'){
         //     steps{
