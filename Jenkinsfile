@@ -48,7 +48,7 @@ pipeline {
         }
         
         stage('Configure staging server'){
-            step{
+            steps{
             echo 'Running ansible playbook to configure staging server'
             sh 'cd ansible/mongodb && ansible-playbook -b mongo.yml'
             }
