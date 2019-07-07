@@ -13,7 +13,7 @@ pipeline {
         }
         stage('publish to artifactory'){
             steps{ 
-               sh "curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -T dist/yelpCamp.zip http://34.244.56.79:8081/artifactory/generic-local/yelpCamp.zip"
+               sh "curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -T dist/yelpCamp.zip http://artifactory:8081/artifactory/generic-local/yelpCamp.zip"
             }
         }
 
@@ -49,15 +49,15 @@ pipeline {
         // }
 
 
-        stage('Provision staging server'){
-            steps{
-                echo 'Provisioning staging server with Terraform'
-                sh 'cd terraform && terraform init'
-                sh 'cd terraform && terraform plan -out=tfplan -input=false'
-                sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
+        // stage('Provision staging server'){
+        //     steps{
+        //         echo 'Provisioning staging server with Terraform'
+        //         sh 'cd terraform && terraform init'
+        //         sh 'cd terraform && terraform plan -out=tfplan -input=false'
+        //         sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
 
-            }
-        }
+        //     }
+        // }
         
 
 
