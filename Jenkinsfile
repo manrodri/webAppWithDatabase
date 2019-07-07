@@ -49,15 +49,14 @@ pipeline {
         
         stage('Configure staging server'){
             steps{
-            script{
-                try{
-                    sh 'sudo rm -r /home/deploy/.ssh/known_hosts'
-                } catch{
-                    echo: 'caught error: $err'
+                script{
+                        sh 'sudo rm -r /home/deploy/.ssh/known_hosts'                        try {
+                        } catch (err) {
+                            echo: 'caught error: $err'
+                        }
+                        echo 'Running ansible playbook to configure staging server'
+                        sh 'cd ansible && ansible-playbook -b mongo.yml'
                 }
-                echo 'Running ansible playbook to configure staging server'
-                sh 'cd ansible && ansible-playbook -b mongo.yml'
-             }
             }
         }
         
