@@ -50,8 +50,8 @@ pipeline {
         stage('Configure staging server'){
             steps{
             echo 'Running ansible playbook to configure staging server'
-            sh 'cd ansible'
-            sh 'ansible dev -i inventory -m shell -a killall  apt-get || true'
+            sh 'cd ansible && ls -ahl'
+            sh 'ansible dev -i inventory -m command -a env'
             sh 'ansible-playbook -b mongo.yml'
             }
         }
