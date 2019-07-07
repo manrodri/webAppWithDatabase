@@ -1,10 +1,10 @@
 [all]
 jenkins.example.com
 staging.example.com
-production.example.com
 
 [dev]
 staging.example.com
 
-[prod]
-production.example.com
+
+[controller]
+jenkins.example.com
