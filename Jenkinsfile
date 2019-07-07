@@ -37,20 +37,20 @@ pipeline {
         //     }
         // }
 
-        // stage('Provision staging server'){
-        //     steps{
-        //         echo 'Provisioning staging server with Terraform'
-        //         sh 'cd terraform && terraform init'
-        //         sh 'cd terraform && terraform plan -out=tfplan -input=false'
-        //         sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
+        stage('Provision staging server'){
+            steps{
+                echo 'Provisioning staging server with Terraform'
+                sh 'cd terraform && terraform init'
+                sh 'cd terraform && terraform plan -out=tfplan -input=false'
+                sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
 
-        //     }
-        // }
+            }
+        }
         
         stage('Configure staging server'){
             steps{
             echo 'Running ansible playbook to configure staging server'
-            sh 'cd ansible/mongodb && ls -ahl'
+            sh 'cd ansible && ansible-playbook -b mongo.yml'
             }
         }
         
