@@ -3,8 +3,9 @@
 
 - name: install mongoDB
   apt: 
-    name: mongodb
-    state: present
+    name: mongodb 
+    state: installed
+    register: apt_status
     until: apt_status|success
     delay: 6
     retries: 10
