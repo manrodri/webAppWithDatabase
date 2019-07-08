@@ -62,7 +62,7 @@ pipeline {
             }
         }
         
-            stage('DeployToProduction') {
+            stage('Deploy To Staging Server') {
             steps {
                 input 'Does the staging environment look OK?'
                 milestone(1)
