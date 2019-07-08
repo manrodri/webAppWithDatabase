@@ -40,9 +40,9 @@ pipeline {
         stage('Provision staging server'){
             steps{
                 echo 'Provisioning staging server with Terraform'
-                sh 'cd terraform/staging && terraform init'
-                sh 'cd terraform/staging && terraform plan -out=tfplan -input=false'
-                sh 'cd terraform/staging && terraform apply -lock=false -input=false tfplan'
+                sh 'cd terraform && terraform init'
+                sh 'cd terraform && terraform plan -out=tfplan -input=false'
+                sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
 
             }
         }
@@ -81,12 +81,11 @@ pipeline {
         }
         stage('UAT'){
             steps{
-                sh 'sleep 20df -'
+                sh 'sleep 20'
                 sh "python run_smoke_test.py"
             }
         }
-        stage('Deploy to production'){
-                
+        stage('Deploy to production'){ 
                 steps{
                     input 'Does the staging environment look OK?'
                     milestone(1)
