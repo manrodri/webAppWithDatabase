@@ -3,3 +3,4 @@
 mongodb_ver: 3.2
 os_ver: redhat
 os_family: 8
+host: 192.168.1.73

@@ -1,8 +1,0 @@
----
-
-- hosts: staging 
-  remote_user: jenkins
-  become: yes
-
-  roles:
-    - db

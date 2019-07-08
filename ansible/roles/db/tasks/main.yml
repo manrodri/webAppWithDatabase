@@ -18,19 +18,19 @@
     - mongo-10gen
     - mongo-10gen-server
 
-- name: copy config file
-  copy:
-    src: mongodb.conf
-    dest: /etc/mongodb.conf
-    owner: root
-    group: root
-    mode: 0644
+
+# NOTE: Before 2.3, option 'dest', 'destfile' or 'name' was used instead of 'path'
+- name: Allow remote login
+  lineinfile:
+    path: /etc/mongod.conf
+    regexp: '^bind_ip=127.0.0.1'
+    line: bind_ip=0.0.0.0
   notify:
     - restart mongodb
 
 - name: Ensure mongodb is running and and enabled to start automatically on reboots
   systemd:
-    name: mongodb
+    name: mongod
     enabled: yes
     state: started
 
