@@ -6,7 +6,7 @@ class TestEndPointAreUp(unittest.TestCase):
 
     def setUp(self):
         with open('/tmp/public_ip.txt', 'r') as f:
-            host = f.readline()
+            host = f.read().strip()
 
         self.HOST = host or 'localhost'
         self.PORT = os.environ.get('YELPCAMP_PORT') or 3000

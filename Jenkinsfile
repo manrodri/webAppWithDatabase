@@ -82,7 +82,6 @@ pipeline {
         // // }
         stage('UAT'){
             steps{
-                
                 sh "python run_smoke_test.py"
             }
         }
