@@ -67,8 +67,7 @@ pipeline {
                 input 'Does the staging environment look OK?'
                 milestone(1)
                 script{
-                    sh 'ip=$(cat /tmp/public_ip.txt)'
-                    sh "ssh -tt ${ip}"
+                    sh "ssh -tt $(cat /tmp/public_ip.txt)"
                     sh 'echo hello > /tmp/greeting.txt'
                     sh 'hostname'
                 }
