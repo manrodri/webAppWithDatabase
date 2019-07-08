@@ -67,7 +67,8 @@ pipeline {
                 input 'Does the staging environment look OK?'
                 milestone(1)
                 script{
-                    sh "ssh  jenkins@`cat /tmp/public_ip.txt`"
+                    sh "sshpass   jenkins@`cat /tmp/public_ip.txt`"
+                    sh "sshpass  ssh  jenkins@`cat /tmp/public_ip.txt` \"docker pull manrodri/yelpcamp\""
                     sh 'echo hello > /tmp/greeting.txt'
                     sh 'hostname'
                 }
