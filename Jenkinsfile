@@ -40,9 +40,9 @@ pipeline {
         stage('Provision staging server'){
             steps{
                 echo 'Provisioning staging server with Terraform'
-                sh 'cd terraform && terraform init'
-                sh 'cd terraform && terraform plan -out=tfplan -input=false'
-                sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
+                sh 'cd terraform/staging && terraform init'
+                sh 'cd terraform/staging && terraform plan -out=tfplan -input=false'
+                sh 'cd terraform/staging && terraform apply -lock=false -input=false tfplan'
 
             }
         }
@@ -64,8 +64,7 @@ pipeline {
         
             stage('Deploy To Staging Server') {
             steps {
-                input 'Does the staging environment look OK?'
-                milestone(1)
+                
                 withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     script{
                         sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker pull manrodri/yelpcamp:${env.BUILD_NUMBER}\""
@@ -75,7 +74,7 @@ pipeline {
                         } catch (err) {
                             echo: 'caught error: $err'
                         }
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker run --restart always --name yelpCamp -p 3000:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker run  --name yelpCamp -p 3000:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
                     }
                 }
             }
@@ -84,6 +83,22 @@ pipeline {
             steps{
                 sh 'sleep 20df -'
                 sh "python run_smoke_test.py"
+            }
+        }
+        stage('Deploy to production'){
+                input 'Does the staging environment look OK?'
+                milestone(1)
+                steps{
+                    withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                    script{
+                        
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker stop yelpCamp\""
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker rm yelpCamp\""
+                        
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker run --restart always --name yelpCamp -p 3000:80  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
+                    }
+                }
+
             }
         }
     }
