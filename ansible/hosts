@@ -1,7 +1,7 @@
 [all:vars]
 
 [staging]
-192.168.1.73 ansible_user=deploy  
+192.168.1.241 ansible_user=jenkins  
 
 
 

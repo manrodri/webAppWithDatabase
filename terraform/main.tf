@@ -5,7 +5,7 @@ provider "aws" {
 }
 resource "aws_instance" "staging_server" {
 
-  ami = "ami-008b421f4cce338e4"
+  ami = "ami-0d9f7dccc5299f2af"
   instance_type = "t2.micro"
   key_name      = "manuel_tech_case"
   private_ip = "192.168.1.241"
@@ -29,7 +29,6 @@ resource "aws_instance" "staging_server" {
       
     ]
   }
-
   tags = {
     Name = "server deployed by Terraform"
     owner= "manuel"
