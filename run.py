@@ -67,7 +67,7 @@ else:
 
 # retrieve artifact from artifactory
 os.chdir('/tmp')
-cmd = 'curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -O http://34.243.152.36:8081/artifactory/generic-local/yelpCamp.zip'
+cmd = 'curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -O http://http://34.245.22.117:8081/artifactory/generic-local/yelpCamp.zip'
 rc = execute_command_with_output(cmd, logger, message='Retrieving artifact')
 if not rc[0]:
   logger.error(rc[1])
