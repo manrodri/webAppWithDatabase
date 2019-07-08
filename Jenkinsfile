@@ -86,9 +86,10 @@ pipeline {
             }
         }
         stage('Deploy to production'){
-                input 'Does the staging environment look OK?'
-                milestone(1)
+                
                 steps{
+                    input 'Does the staging environment look OK?'
+                    milestone(1)
                     withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     script{
                         
