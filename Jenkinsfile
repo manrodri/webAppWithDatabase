@@ -68,6 +68,11 @@ pipeline {
                 input 'Does the staging environment look OK?'
                 milestone(1)
                 script{
+                        try{
+                            sh 'rm -rf .ssh/known_hosts'
+                        } catch(err) {
+                            echo: 'caught error: $err'
+                        }
                         sh 'ssh 192.168.1.241'
                         sh "docker pull manrodri/yelpcamp:${env.BUILD_NUMBER}"
                         try {
