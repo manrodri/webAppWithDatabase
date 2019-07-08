@@ -108,7 +108,5 @@ pipeline {
                 //         }
                 //         sh "docker run --restart always --name yelpCamp -p 3000:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}"
                 // }
-            }
-        }
     }
 }
