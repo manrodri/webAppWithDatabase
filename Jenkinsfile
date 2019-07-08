@@ -82,7 +82,7 @@ pipeline {
         }
         stage('UAT'){
             steps{
-                sh 'sleep 20'
+                sh 'sleep 20df -'
                 sh "python run_smoke_test.py"
             }
         }
