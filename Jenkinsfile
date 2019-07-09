@@ -82,7 +82,7 @@ pipeline {
         stage('UAT'){
             steps{
                 sh 'sleep 20'
-                sh "cd smokeTest && python -m unittest run_smoke_test"
+                sh "cd smokeTest && python -m unittest test_smoke"
             }
         }
         stage('Deploy to production'){ 
