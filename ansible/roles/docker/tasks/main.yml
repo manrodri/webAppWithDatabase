@@ -7,7 +7,7 @@
     shell: amazon-linux-extras install docker
   
   - name: allow jenkins to run docker commands
-    shell: chmod 777 /var/run/docker.sock
+    shell: usermod -aG docker jenkins
 
   - name: Ensure docker is running and and enabled to start automatically on reboots
     systemd:
