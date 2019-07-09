@@ -13,7 +13,7 @@ pipeline {
         }
         stage('publish to artifactory'){
             steps{ 
-               sh "curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -T dist/yelpCamp.zip http://artifactory:8081/artifactory/generic-local/yelpCamp.zip"
+               sh "curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -T dist/yelpCamp.zip http://artifactory:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip"
             }
         }
 
@@ -24,7 +24,6 @@ pipeline {
                 }
             }
         }
-
         stage('Push Docker Image') {
             
             steps {
@@ -41,7 +40,7 @@ pipeline {
             steps{
                 echo 'Provisioning staging server with Terraform'
                 sh 'cd terraform && terraform init'
-                sh 'cd terraform && terraform plan -out=tfplan -input=false'
+                sh "cd terraform && terraform plan -out=tfplan -input=false -var \"artifact_version=${env.BUILD_NUMBER}\""
                 sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
 
             }
