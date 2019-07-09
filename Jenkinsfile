@@ -67,7 +67,8 @@ pipeline {
                 
                 withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     script{
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker pull manrodri/yelpcamp:${env.BUILD_NUMBER}\""
+                        env.YELPCAMP_HOST = readFile '/tmp/public_ip.txt'
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME${env.YELPCAMP_HOST} \"docker pull manrodri/yelpcamp:${env.BUILD_NUMBER}\""
                         try {
                             sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker stop yelpCamp\""
                             sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker rm yelpCamp\""
@@ -99,6 +100,15 @@ pipeline {
                     }
                 }
 
+            }
+        }
+        stage('smoke test'){
+            steps{
+                script{
+                    env.YELPCAMP_PORT = 80
+                    sh 'sleep 10'
+                    sh "cd smokeTest && python -m unittest test_smoke"
+                }
             }
         }
     }
