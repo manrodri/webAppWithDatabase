@@ -79,13 +79,13 @@ pipeline {
         //         }
         //     }
         // }
-        stage('UAT'){
-            steps{
-                sh "YELPCAMP_HOST=`cat /tmp/public_ip.txt`"
-                sh 'sleep 20'
-                sh "cd smokeTest && python -m unittest test_smoke"
-            }
-        }
+        // stage('UAT'){
+        //     steps{
+        //         sh "YELPCAMP_HOST=`cat /tmp/public_ip.txt`"
+        //         sh 'sleep 20'
+        //         sh "cd smokeTest && python -m unittest test_smoke"
+        //     }
+        // }
         // stage('Deploy to production'){ 
         //         steps{
         //             input 'Does the staging environment look OK?'
@@ -108,6 +108,7 @@ pipeline {
                 sh 'sleep 10'
                 sh "cd smokeTest && python -m unittest test_smoke"
            
+            }
+        }
     }
 }
-    }
