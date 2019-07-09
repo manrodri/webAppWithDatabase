@@ -103,11 +103,13 @@ pipeline {
         // }
         stage('smoke test'){
             steps{
-                env.YELPCAMP_PORT = 80
-                echo "${env.YELPCAMP_PORT}"
-                sh 'sleep 10'
-                sh "cd smokeTest && python -m unittest test_smoke"
-           
+                script{
+                    env.YELPCAMP_PORT = 80
+                    echo "${env.YELPCAMP_PORT}"
+                    sh 'sleep 10'
+                    sh "cd smokeTest && python -m unittest test_smoke"
+                }
+                
             }
         }
     }
