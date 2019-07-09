@@ -95,7 +95,7 @@ pipeline {
                         sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker stop yelpCamp\""
                         sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker rm yelpCamp\""
                         
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker run --restart always --name yelpCamp -p 3000:80  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker run --restart always --name yelpCamp -p 80:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
                     }
                 }
 
