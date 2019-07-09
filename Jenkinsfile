@@ -43,10 +43,7 @@ pipeline {
                 sh 'cd terraform && terraform init'
                 sh 'cd terraform && terraform plan -out=tfplan -input=false'
                 sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
-                script{
-                    env.YELPCAMP_HOST = readFile '/tmp/public_ip.txt'
-                }
-        
+
             }
         }
         
@@ -67,59 +64,41 @@ pipeline {
         
             stage('Deploy To Staging Server') {
             steps {
-                script{
-                          withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-                    
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.YELPCAMP_HOST} \"docker pull manrodri/yelpcamp:${env.BUILD_NUMBER}\""
+                
+                withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                    script{
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker pull manrodri/yelpcamp:${env.BUILD_NUMBER}\""
                         try {
-                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.YELPCAMP_HOST} \"docker stop yelpCamp\""
-                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.YELPCAMP_HOST} \"docker rm yelpCamp\""
+                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker stop yelpCamp\""
+                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker rm yelpCamp\""
                         } catch (err) {
                             echo: 'caught error: $err'
                         }
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.YELPCAMP_HOST} \"docker run  --name yelpCamp -p 3000:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
-                        
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker run  --name yelpCamp -p 3000:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
                     }
                 }
-                
-              
             }
         }
         stage('UAT'){
             steps{
-                script{
-                    sh 'sleep 20'
-                    sh "cd smokeTest && python -m unittest test_smoke"
-                }
-                
+                sh 'sleep 20'
+                sh "cd smokeTest && python -m unittest test_smoke"
             }
         }
         stage('Deploy to production'){ 
                 steps{
-                    script{
-                         input 'Does the staging environment look OK?'
+                    input 'Does the staging environment look OK?'
                     milestone(1)
                     withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     script{
                         
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.YELPCAMP_HOST} \"docker stop yelpCamp\""
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.YELPCAMP_HOST} \"docker rm yelpCamp\""
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker stop yelpCamp\""
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker rm yelpCamp\""
                         
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.YELPCAMP_HOST} \"docker run --restart always --name yelpCamp -p 80:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
-                            }       
-                        }
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker run --restart always --name yelpCamp -p 80:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
                     }
-                   
-            }
-        }
-        stage('smoke test'){
-            steps{
-                script{
-                    env.YELPCAMP_PORT = 80
-                    sh 'sleep 10'
-                    sh "cd smokeTest && python -m unittest test_smoke"
                 }
-                
+
             }
         }
     }
