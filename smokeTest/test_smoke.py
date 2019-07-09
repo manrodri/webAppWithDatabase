@@ -8,7 +8,7 @@ class TestEndPointAreUp(unittest.TestCase):
         with open('/tmp/public_ip.txt', 'r') as f:
             host = f.read().strip()
 
-        self.HOST = host or 'localhost'
+        self.HOST = os.environ.get('YELPCAMP_HOST') or 'localhost' 
         self.PORT = os.environ.get('YELPCAMP_PORT') or 3000
         self.url = 'http://{host}:{port}'.format(host=self.HOST, port=self.PORT)
         print(self.url)
