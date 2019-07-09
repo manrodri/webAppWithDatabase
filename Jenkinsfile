@@ -81,9 +81,7 @@ pipeline {
         }
         stage('UAT'){
             steps{
-                script{
-                    env.YELPCAMP_HOST= sh "`cat /tmp/public_ip.txt`"
-                }
+                sh "YELPCAMP_HOST=`cat /tmp/public_ip.txt`"
                 sh 'sleep 20'
                 sh "cd smokeTest && python -m unittest test_smoke"
             }
@@ -106,9 +104,7 @@ pipeline {
         }
         stage('smoke test'){
             steps{
-                script{
-                    env.YELPCAMP_PORT=80   
-                }
+                sh 'YELPCAMP_PORT=80'
                 sh 'sleep 10'
                 sh "cd smokeTest && python -m unittest test_smoke"
            
