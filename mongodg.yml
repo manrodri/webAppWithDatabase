@@ -1,8 +1,0 @@
----
-
-- hosts: staging 
-  remote_user: manuel
-  become: yes
-
-  roles:
-    - db

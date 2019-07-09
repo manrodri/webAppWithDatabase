@@ -1,0 +1,17 @@
+---
+- name: install docker
+  hosts: all
+  gather_facts: false
+  tasks:
+  
+  - name: update system
+    shell: yum update -y
+
+  - name: run amazon-linux-extras install command
+    shell: amazon-linux-extras install docker
+
+  - name: Ensure docker is running and and enabled to start automatically on reboots
+    systemd:
+      name: docker
+      enabled: yes
+      state: started

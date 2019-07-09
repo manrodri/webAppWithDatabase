@@ -56,7 +56,7 @@ pipeline {
                             echo: 'caught error: $err'
                         }
                         echo 'Running ansible playbook to configure staging server'
-                        sh 'cd ansible && ansible-playbook -b mongodb.yml'
+                        sh 'cd ansible && ansible-playbook -i inventory docker.yml '
 
                 }
             }

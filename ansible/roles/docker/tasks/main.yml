@@ -1,8 +1,0 @@
----
-# tasks file for docker
-
-- name: Ensure docker is running and and enabled to start automatically on reboots
-  systemd:
-    name: docker
-    enabled: yes
-    state: started
