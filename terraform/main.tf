@@ -8,7 +8,6 @@ resource "aws_instance" "staging_server" {
   ami = "ami-0d9f7dccc5299f2af"
   instance_type = "t2.micro"
   key_name      = "manuel_tech_case"
-  private_ip = "192.168.1.241"
   vpc_security_group_ids = ["sg-0b0afa51d47dcad45"]
   subnet_id = "subnet-0f97221768fbbfa7c"
 
