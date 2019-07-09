@@ -56,6 +56,8 @@ pipeline {
                             echo: 'caught error: $err'
                         }
                         echo 'updating ip address.'
+                        sh 'ls -alh'
+                        sh 'cd ansible'
                         sh 'python update_address.py ansbile/hosts /tmp/public_ip.txt'
                         echo 'Running ansible playbook to configure staging server'
                         sh 'cd ansible && ansible-playbook -b mongodb.yml'
