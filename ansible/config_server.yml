@@ -1,0 +1,12 @@
+---
+
+- name: install
+  hosts: staging 
+  become: yes
+
+  roles:
+    - docker
+
+
+
+
