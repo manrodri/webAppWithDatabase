@@ -28,15 +28,12 @@ def main():
             if 'ansible_user=jenkins' in line:
                 to_replace = line.split()[0]
                 new_line = line.replace(to_replace, ip_address)
-                print('NEW LINE IS: {}'.format(new_line))
     with open(hosts_file, 'r') as r:
         with open('tmp_file', 'w') as w:
             for line in r:
                 if 'ansible_user=jenkins' in line:
-                    print('writing: {}'.format(new_line))
                     w.write(new_line)
                 else:
-                    print('writing: {}'.format(new_line))
                     w.write(line)
     shutil.copyfile('tmp_file', hosts_file)
     os.remove('tmp_file')
