@@ -28,7 +28,7 @@ resource "aws_instance" "staging_server" {
 
   provisioner "remote-exec" {
     inline = [
-     "python2 /jenkins_temp/run.py 3000 ${var.artifact_version}",
+     "python2 /tmp/run.py 3000 ${var.artifact_version}",
       
     ]
   }
