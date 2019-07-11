@@ -1,6 +1,6 @@
 [all:vars]
 
 [staging]
-{{ public_ip }} ansible_user=jenkins  
+{{ public_ip }}  
   
 
