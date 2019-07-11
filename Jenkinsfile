@@ -1,21 +1,21 @@
 pipeline {
     agent any
     stages {
-        // stage('Build') {
-        //     steps {
-        //         echo 'Running build automation'
-        //         sh './gradlew build'
-        //         archiveArtifacts artifacts: "dist/yelpCamp.zip"
+        stage('Build') {
+            steps {
+                echo 'Running build automation'
+                sh './gradlew build'
+                archiveArtifacts artifacts: "dist/yelpCamp.zip"
                 
-        //     }
-        // }
-        // stage('publish to artifactory'){
-        //     steps{ 
+            }
+        }
+        stage('publish to artifactory'){
+            steps{ 
                
-        //        sh "curl -uadmin:AP2wbyNWUQRetr9rDNeQTGkTsqH -T dist/yelpCamp.zip http://artifactory:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip"
+               sh "curl -uadmin:AP2wbyNWUQRetr9rDNeQTGkTsqH -T dist/yelpCamp.zip http://artifactory:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip"
                
-        //     }
-        // }
+            }
+        }
 
 
 
