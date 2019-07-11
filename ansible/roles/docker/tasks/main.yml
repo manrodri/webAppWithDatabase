@@ -1,11 +1,9 @@
----
 # tasks file for docker
   - name: update system
     shell: yum update -y
 
-  - name: run amazon-linux commadn
-    shell: sudo amazon-linux-extras install docker
-  
+  - name: run amazon-linux-extras install command
+    shell: amazon-linux-extras install docker
   
   - name: allow jenkins to run docker commands
     shell: usermod -aG docker jenkins
