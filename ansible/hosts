@@ -1,6 +1,6 @@
 [all:vars]
 
 [staging]
-{{ public_ip }}  
+172.131.3.101
   
 
