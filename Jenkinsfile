@@ -19,24 +19,24 @@ pipeline {
 
 
 
-        // stage('Build Docker Image') {
-        //     steps {
-        //         script {
-        //             app = docker.build("manrodri/yelpcamp")
-        //         }
-        //     }
-        // }
-        // stage('Push Docker Image') {
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    app = docker.build("manrodri/yelpcamp")
+                }
+            }
+        }
+        stage('Push Docker Image') {
             
-        //     steps {
-        //         script {
-        //             docker.withRegistry('https://registry.hub.docker.com', 'dockerKey') {
-        //                 app.push("${env.BUILD_NUMBER}")
-        //                 app.push("latest")
-        //             }
-        //         }
-        //     }
-        // }
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerKey') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
+                }
+            }
+        }
 
         stage('Provision staging server'){
             steps{
@@ -50,10 +50,7 @@ pipeline {
         stage('Configure staging server'){
             steps{
                 script{
-                    
-                        env.INSTANCE_PUBLIC_IP= readFile '/var/lib/jenkins/ip.txt'
-                        echo "PUBLIC IP: ${INSTANCE_PUBLIC_IP}"
-                        
+                  
                         try {
                             sh 'sudo rm -r /home/deploy/.ssh/known_hosts'
                         } catch (err) {
@@ -69,32 +66,32 @@ pipeline {
             }
         }
         
-        //     stage('Deploy To Staging Server') {
-        //     steps {
+            stage('Deploy To Staging Server') {
+            steps {
                 
-        //         withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-        //             script{
-        //                 env.YELPCAMP_HOST = readFile '/tmp/public_ip.txt'
+                withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                    script{
+                        env.YELPCAMP_HOST = readFile '/jenkins_tmp/ip.txt'
                         
-        //                 sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker pull manrodri/yelpcamp:${env.BUILD_NUMBER}\""
-        //                 try {
-        //                     sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker stop yelpCamp\""
-        //                     sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker rm yelpCamp\""
-        //                 } catch (err) {
-        //                     echo: 'caught error: $err'
-        //                 }
-        //                 sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker run  --name yelpCamp -p 3000:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat/jenkins_tmp/ip.txt` \"docker pull manrodri/yelpcamp:${env.BUILD_NUMBER}\""
+                        try {
+                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker stop yelpCamp\""
+                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker rm yelpCamp\""
+                        } catch (err) {
+                            echo: 'caught error: $err'
+                        }
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker run  --name yelpCamp -p 3000:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
 
-        //             }
-        //         }
-        //     }
-        // }
-        // stage('UAT'){
-        //     steps{
-        //         sh 'sleep 20'
-        //         sh "cd smokeTest && python -m unittest test_smoke"
-        //     }
-        // }
+                    }
+                }
+            }
+        }
+        stage('UAT'){
+            steps{
+                sh 'sleep 20'
+                sh "cd smokeTest && python -m unittest test_smoke"
+            }
+        }
         // stage('Deploy to production'){ 
         //         steps{
         //             input 'Does the staging environment look OK?'
