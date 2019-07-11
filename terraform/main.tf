@@ -23,17 +23,6 @@ resource "aws_instance" "staging_server" {
     command = "echo ${aws_instance.staging_server.public_ip} > /jenkins_tmp/ip.txt"
   }
 
- provisioner "file" {
-   source      = "../run.py"
-   destination = "/tmp/run.py"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-     "python2 /tmp/run.py 3000 ${var.artifact_version}",
-      
-    ]
-  }
   tags = {
     Name = "server deployed by Terraform"
     owner= "manuel"
