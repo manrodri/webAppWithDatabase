@@ -29,6 +29,7 @@ resource "aws_instance" "staging_server" {
 
   provisioner "remote-exec" {
     inline = [
+      "echo 192.168.1.216 artifactory docker.artifactory docker-local.artifactory docker-remote.artifactory >> /etc/hosts",
       "python2 /tmp/run.py 3000 ${var.artifact_version}",
       
     ]
