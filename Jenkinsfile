@@ -6,7 +6,7 @@ pipeline {
                 echo env.BUILD_NUMBER
                 echo 'Running build automation'
     
-                sh './gradlew build build'
+                sh './gradlew build'
                 archiveArtifacts artifacts: "dist/yelpCamp.zip"
                 
             }
