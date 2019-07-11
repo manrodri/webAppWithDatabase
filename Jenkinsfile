@@ -42,7 +42,7 @@ pipeline {
             steps{
                 echo 'Provisioning staging server with Terraform'
                 sh 'ls /opt'
-                sh 'ls -lh /opt/terraform/terraform init'
+                sh 'ls -lh ./opt/terraform/terraform init'
                 sh 'echo `hostname`'
                 //sh 'cd terraform && /opt/terrafrom/terraform init'
                 //sh "cd terraform && /opt/terrafrom/terraform plan -out=tfplan -input=false -var \"artifact_version=${env.BUILD_NUMBER}\""
