@@ -1,12 +1,22 @@
 # tasks file for docker
   - name: update system
-    shell: yum update -y
+    shell: apt-get update
 
-  - name: run amazon-linux-extras install command
-    shell: amazon-linux-extras install docker
+  - name: install https packages
+    shell: apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
   
-  - name: allow jenkins to run docker commands
-    shell: usermod -aG docker jenkins
+  - name: add key
+    shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  
+  - name: add repo
+    shell: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+ 
+  - name: update system
+    shell: apt-get update 
+  
+  - name: install docker
+    shell: sudo apt-get install docker-ce docker-ce-cli containerd.io
 
   - name: Ensure docker is running and and enabled to start automatically on reboots
     systemd:
