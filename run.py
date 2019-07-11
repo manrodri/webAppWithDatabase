@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser(description='command line tool to kill a previu
 
 parser.add_argument('port', help='port node application is running')
 parser.add_argument('artifact_version', help='version of the zip file to be deployed.')
+parser.add_argument('--retrieve', help='use this argument to retrive zip artifact')
 parser.add_argument('--version', '-v', action='version', version='%(prog)s 1.0')
 parser.add_argument('--debug', action='store_true')
 
@@ -66,22 +67,19 @@ if rc[1]:
 else:
   logger.error('No service running on port: {}'.format(args.port))
 
+if args.retrieve:
+  # retrieve artifact from artifactory
+  os.chdir('/tmp')
+  cmd = 'curl -uadmin:AP2wbyNWUQRetr9rDNeQTGkTsqH -O "http://54.246.157.29:8081/artifactory/generic-local/{}.zip"'.format(artifact)
+  rc = execute_command_with_output(cmd, logger, message='Retrieving artifact')
+  if not rc[0]:
+    logger.error(rc[1])
+    sys.exit(4)
+  else:
+    logger.info('Artifact retrieved')
+  # extract artifact
+  path_to_zip_file = '/tmp/{}.zip'.format(artifact)
+  directory_to_extract_to = '/tmp/yelpCampApp/'
 
-# retrieve artifact from artifactory
-os.chdir('/tmp')
-cmd = 'curl -uadmin:AP2wbyNWUQRetr9rDNeQTGkTsqH -O "http://54.246.157.29:8081/artifactory/generic-local/yelpCamp_{}.zip"'.format(artifact)
-rc = execute_command_with_output(cmd, logger, message='Retrieving artifact')
-if not rc[0]:
-  logger.error(rc[1])
-  sys.exit(4)
-else:
-  logger.info('Artifact retrieved')
-
-
-
-# extract artifact
-path_to_zip_file = '/tmp/{}.zip'.format(artifact)
-directory_to_extract_to = '/tmp/yelpCampApp/'
-
-with ZipFile(path_to_zip_file,"r") as zip_ref:
-    zip_ref.extractall(directory_to_extract_to)
+  with ZipFile(path_to_zip_file,"r") as zip_ref:
+      zip_ref.extractall(directory_to_extract_to)
