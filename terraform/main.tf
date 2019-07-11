@@ -9,7 +9,6 @@ resource "aws_instance" "staging_server" {
   instance_type = "t2.micro"
   key_name      = "ireland"
   private_ip    = "10.10.10.240"
-  vpc_security_group_ids = ["sg-040c31f84df6507b1"]
   subnet_id = "subnet-0c8c4704d89a2a892"
   
 
