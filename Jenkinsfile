@@ -42,7 +42,7 @@ pipeline {
             steps{
                 echo 'Provisioning staging server with Terraform'
                 sh 'ls /opt'
-                sh 'ls -lh /opt/terraform/terraform init'
+                sh 'ls -lh /opt/terraform/terraform'
                 sh 'cd terraform && /opt/terraform/terraform init'
 
                
