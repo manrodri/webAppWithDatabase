@@ -41,38 +41,31 @@ pipeline {
         stage('Provision staging server'){
             steps{
                 echo 'Provisioning staging server with Terraform'
-                sh 'ls /opt'
-                sh 'ls -lh /opt/terraform/terraform'
                 sh 'cd terraform && /opt/terraform/terraform init'
-
-               
-                //sh 'cd terraform && /opt/terrafrom/terraform init'
-                //sh "cd terraform && /opt/terrafrom/terraform plan -out=tfplan -input=false -var \"artifact_version=${env.BUILD_NUMBER}\""
-                //sh 'cd terraform && /opt/terrafrom/terraform apply -lock=false -input=false tfplan'
-                
-
+                sh "cd terraform && /opt/terraform/terraform plan -out=tfplan -input=false -var \"artifact_version=${env.BUILD_NUMBER}\""
+                sh 'cd terraform && /opt/terraform/terraform apply -lock=false -input=false tfplan'
             }
         }
         
-        // stage('Configure staging server'){
-        //     steps{
-        //         script{
-        //                 try {
-        //                     sh 'sudo rm -r /home/deploy/.ssh/known_hosts'
-        //                 } catch (err) {
-        //                     echo: 'caught error: $err'
-        //                 }
-        //                 sh 'python2 add_public_ip.py ansible/hosts'
-        //                 echo 'Running ansible playbook to configure staging server'
-        //                 sh 'cd ansible && ansible-playbook -b config_server.yml '
-        //                 script{
-        //                     env.INSTANCE_PUBLIC_IP= readFile '/tmp/ip.txt'
-        //                     echo "${INSTANCE_PUBLIC_IP}"
-        //                 }
+        stage('Configure staging server'){
+            steps{
+                script{
+                        try {
+                            sh 'sudo rm -r /home/deploy/.ssh/known_hosts'
+                        } catch (err) {
+                            echo: 'caught error: $err'
+                        }
+                        sh 'python2 add_public_ip.py ansible/hosts'
+                        echo 'Running ansible playbook to configure staging server'
+                        sh 'cd ansible && ansible-playbook -b config_server.yml '
+                        script{
+                            env.INSTANCE_PUBLIC_IP= readFile '/tmp/ip.txt'
+                            echo "${INSTANCE_PUBLIC_IP}"
+                        }
 
-        //         }
-        //     }
-        // }
+                }
+            }
+        }
         
         //     stage('Deploy To Staging Server') {
         //     steps {
