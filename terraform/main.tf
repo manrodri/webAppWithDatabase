@@ -18,18 +18,17 @@ resource "aws_instance" "staging_server" {
   }
 
   provisioner "local-exec"{
-    command = "echo ${aws_instance.staging_server.public_ip} > /var/lib/jenkins/ip.txt"
+    command = "echo ${aws_instance.staging_server.public_ip} > /jenkins_tmp/ip.txt"
   }
 
- # provisioner "file" {
- #   source      = "../run.py"
- #   destination = "/tmp/run.py"
-  #}
+ provisioner "file" {
+   source      = "../run.py"
+   destination = "/jenkins_temp/run.py"
+  }
 
   provisioner "remote-exec" {
     inline = [
-      "echo 54.246.157.29 artifactory docker.artifactory docker-local.artifactory docker-remote.artifactory >> /etc/hosts",
-     # "python2 /tmp/run.py 3000 ${var.artifact_version}",
+     "python2 /jenkins_temp/run.py 3000 ${var.artifact_version}",
       
     ]
   }
