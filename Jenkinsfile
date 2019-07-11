@@ -41,9 +41,11 @@ pipeline {
         stage('Provision staging server'){
             steps{
                 echo 'Provisioning staging server with Terraform'
-                sh 'cd terraform && /opt/terrafrom/terraform init'
-                sh "cd terraform && /opt/terrafrom/terraform plan -out=tfplan -input=false -var \"artifact_version=${env.BUILD_NUMBER}\""
-                sh 'cd terraform && /opt/terrafrom/terraform apply -lock=false -input=false tfplan'
+                sh 'ls /opt'
+                sh 'echo `hostname`'
+                //sh 'cd terraform && /opt/terrafrom/terraform init'
+                //sh "cd terraform && /opt/terrafrom/terraform plan -out=tfplan -input=false -var \"artifact_version=${env.BUILD_NUMBER}\""
+                //sh 'cd terraform && /opt/terrafrom/terraform apply -lock=false -input=false tfplan'
                 
 
             }
