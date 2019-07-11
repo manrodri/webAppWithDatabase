@@ -52,7 +52,7 @@ pipeline {
                 script{
                     
                         env.INSTANCE_PUBLIC_IP= readFile '/var/lib/jenkins/ip.txt'
-                        echo "${INSTANCE_PUBLIC_IP}"
+                        echo "PUBLIC IP: ${INSTANCE_PUBLIC_IP}"
                         
                         try {
                             sh 'sudo rm -r /home/deploy/.ssh/known_hosts'
@@ -60,6 +60,8 @@ pipeline {
                             echo: 'caught error: $err'
                         }
                         sh 'python2 add_public_ip.py ansible/hosts'
+                        echo 'ansible/hosts file ..... :'
+                        sh 'cat ansible/hosts'
                         echo 'Running ansible playbook to configure staging server'
                         sh 'cd ansible && ansible-playbook -b config_server.yml '
                         
