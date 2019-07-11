@@ -15,10 +15,6 @@ pipeline {
             steps{ 
                
                sh "curl -uadmin:AP2wbyNWUQRetr9rDNeQTGkTsqH -T dist/yelpCamp.zip http://artifactory:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip"
-               script{
-                   env.INSTANCE_PUBLIC_IP= readFile '/tmp/ip.txt'
-                   echo "${INSTANCE_PUBLIC_IP}"
-               }
             }
         }
 
@@ -49,6 +45,8 @@ pipeline {
                 sh 'cd terraform && terraform init'
                 sh "cd terraform && terraform plan -out=tfplan -input=false -var \"artifact_version=${env.BUILD_NUMBER}\""
                 sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
+                env.INSTANCE_PUBLIC_IP= readFile '/tmp/ip.txt'
+                echo "${INSTANCE_PUBLIC_IP}"
                 
 
             }
