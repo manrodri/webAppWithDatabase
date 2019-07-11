@@ -10,7 +10,7 @@ resource "aws_instance" "staging_server" {
   key_name      = "ireland"
   private_ip    = "10.10.10.240"
   subnet_id = "subnet-0c8c4704d89a2a892"
-  vpc_security_group_ids = ["sg-070c0bddc27ea3ebf"]
+  
   
 
   connection {
