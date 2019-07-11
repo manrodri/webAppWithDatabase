@@ -14,7 +14,7 @@ pipeline {
         stage('publish to artifactory'){
             steps{ 
                
-               sh "curl -uadmin:AP2wbyNWUQRetr9rDNeQTGkTsqH -T dist/yelpCamp.zip http://artifactory:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip"
+               sh "curl -uadmin:AP2wbyNWUQRetr9rDNeQTGkTsqH -T dist/yelpCamp.zip http://54.246.157.29:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip"
             }
         }
 
