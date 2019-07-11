@@ -72,6 +72,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     script{
                         env.YELPCAMP_HOST = readFile '/tmp/ip.txt'
+                        echo "$env.YELPCAMP_HOST"
                         
                         sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/ip.txt` \"docker pull manrodri/yelpcamp:${env.BUILD_NUMBER}\""
                         try {
