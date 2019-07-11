@@ -5,12 +5,11 @@ provider "aws" {
 }
 resource "aws_instance" "staging_server" {
 
-  ami = "ami-0a901aa2ba3f90afa"
+  ami = "ami-085362a9094e7b5be"
   instance_type = "t2.micro"
-  key_name      = "manuel_tech_case"
-  private_ip = "192.168.1.241"
-  vpc_security_group_ids = ["sg-0b0afa51d47dcad45"]
-  subnet_id = "subnet-0f97221768fbbfa7c"
+  key_name      = "ireland"
+  vpc_security_group_ids = ["sg-070c0bddc27ea3ebf"]
+  subnet_id = "subnet-6eafc008"
 
   connection {
     type     = "ssh"
@@ -19,18 +18,18 @@ resource "aws_instance" "staging_server" {
   }
 
   provisioner "local-exec"{
-    command = "echo ${aws_instance.staging_server.public_ip} > /tmp/public_ip.txt"
+    command = "echo ${aws_instance.staging_server.public_ip} > /tmp/ip.txt"
   }
 
-  provisioner "file" {
-    source      = "../run.py"
-    destination = "/tmp/run.py"
-  }
+ # provisioner "file" {
+ #   source      = "../run.py"
+ #   destination = "/tmp/run.py"
+  #}
 
   provisioner "remote-exec" {
     inline = [
-      "echo 192.168.1.216 artifactory docker.artifactory docker-local.artifactory docker-remote.artifactory >> /etc/hosts",
-      "python2 /tmp/run.py 3000 ${var.artifact_version}",
+      "echo 54.246.157.29 artifactory docker.artifactory docker-local.artifactory docker-remote.artifactory >> /etc/hosts",
+     # "python2 /tmp/run.py 3000 ${var.artifact_version}",
       
     ]
   }

@@ -43,32 +43,32 @@ pipeline {
         //     }
         // }
 
-        // stage('Provision staging server'){
-        //     steps{
-        //         echo 'Provisioning staging server with Terraform'
-        //         sh 'cd terraform && terraform init'
-        //         sh "cd terraform && terraform plan -out=tfplan -input=false -var \"artifact_version=${env.BUILD_NUMBER}\""
-        //         sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
+        stage('Provision staging server'){
+            steps{
+                echo 'Provisioning staging server with Terraform'
+                sh 'cd terraform && terraform init'
+                sh "cd terraform && terraform plan -out=tfplan -input=false -var \"artifact_version=${env.BUILD_NUMBER}\""
+                sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
                 
 
-        //     }
-        // }
+            }
+        }
         
-        // stage('Configure staging server'){
-        //     steps{
-        //         script{
-        //                 try {
-        //                     sh 'sudo rm -r /home/deploy/.ssh/known_hosts'
-        //                 } catch (err) {
-        //                     echo: 'caught error: $err'
-        //                 }
-        //                 sh 'rm -rf ansible/hosts'
-        //                 echo 'Running ansible playbook to configure staging server'
-        //                 sh 'cd ansible && ansible-playbook -b config_server.yml '
+        stage('Configure staging server'){
+            steps{
+                script{
+                        try {
+                            sh 'sudo rm -r /home/deploy/.ssh/known_hosts'
+                        } catch (err) {
+                            echo: 'caught error: $err'
+                        }
+                        sh 'python add_public_ip.py ansible/hosts'
+                        echo 'Running ansible playbook to configure staging server'
+                        sh 'cd ansible && ansible-playbook -b config_server.yml '
 
-        //         }
-        //     }
-        // }
+                }
+            }
+        }
         
         //     stage('Deploy To Staging Server') {
         //     steps {

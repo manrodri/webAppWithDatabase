@@ -15,16 +15,7 @@ script_dir = os.getcwd()
 hosts_path = os.path.join(script_dir, sys.argv[1])
 logger.info('Path to host file: {}'.format(hosts_path))
 
-with open(hosts_path, 'r') as f:
-    for line in f:
-        if 'ansible_user=jenkins' in line:
-            t = Template(line)
-            
-            PUBLIC_IP = os.environ.get('INSTANCE_PUBLIC_IP')
-            logger.info('public ip: {}'.format(PUBLIC_IP))
-            
-            new_line = t.render(public_ip=PUBLIC_IP)
-            logger.info('NEW LINE IS: {}'.format(new_line))
+new_line = '{} ansible_user=jenkins'.format(os.environ.get('INSTANCE_PUBLIC_IP'))
 
 with open(hosts_path, 'r') as f:
     lines = [line for line in f]
