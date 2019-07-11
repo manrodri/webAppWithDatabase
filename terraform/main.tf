@@ -23,7 +23,7 @@ resource "aws_instance" "staging_server" {
 
  provisioner "file" {
    source      = "../run.py"
-   destination = "/jenkins_temp/run.py"
+   destination = "/tmp/run.py"
   }
 
   provisioner "remote-exec" {
