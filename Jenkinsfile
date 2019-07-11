@@ -38,14 +38,14 @@ pipeline {
         //     }
         // }
 
-        stage('Provision staging server'){
-            steps{
-                echo 'Provisioning staging server with Terraform'
-                sh 'cd terraform && /opt/terraform/terraform init'
-                sh "cd terraform && /opt/terraform/terraform plan -out=tfplan -input=false -var \"artifact_version=${env.BUILD_NUMBER}\""
-                sh 'cd terraform && /opt/terraform/terraform apply -lock=false -input=false tfplan'
-            }
-        }
+        // stage('Provision staging server'){
+        //     steps{
+        //         echo 'Provisioning staging server with Terraform'
+        //         sh 'cd terraform && /opt/terraform/terraform init'
+        //         sh "cd terraform && /opt/terraform/terraform plan -out=tfplan -input=false -var \"artifact_version=${env.BUILD_NUMBER}\""
+        //         sh 'cd terraform && /opt/terraform/terraform apply -lock=false -input=false tfplan'
+        //     }
+        // }
         
         stage('Configure staging server'){
             steps{
