@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'hostname'
-                echo env.BUILD_NUMBER
+                sh 'whoami'
+                sh 'cat /etc/hosts'
                 echo 'Running build automation'
     
                 sh './gradlew build'
