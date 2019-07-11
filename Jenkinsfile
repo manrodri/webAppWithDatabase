@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo "${env.HOSTNAME}"
+                echo "${HOSTNAME}"
                 echo env.BUILD_NUMBER
                 echo 'Running build automation'
     
