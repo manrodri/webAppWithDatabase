@@ -59,8 +59,7 @@ pipeline {
                         } catch (err) {
                             echo: 'caught error: $err'
                         }
-                        sh 'python2 add_public_ip.py ansible/hosts'
-                        echo 'ansible/hosts file ..... :'
+                        
                         sh 'cat ansible/hosts'
                         echo 'Running ansible playbook to configure staging server'
                         sh 'cd ansible && ansible-playbook -b config_server.yml '
