@@ -18,7 +18,7 @@ resource "aws_instance" "staging_server" {
   }
 
   provisioner "local-exec"{
-    command = "sudo echo ${aws_instance.staging_server.public_ip} > /tmp/ip.txt"
+    command = "echo ${aws_instance.staging_server.public_ip} > /var/lib/jenkins/ip.txt"
   }
 
  # provisioner "file" {

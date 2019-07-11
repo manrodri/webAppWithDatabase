@@ -50,6 +50,10 @@ pipeline {
         stage('Configure staging server'){
             steps{
                 script{
+                    
+                        env.INSTANCE_PUBLIC_IP= readFile '/var/lib/jenkins/ip.txt'
+                        echo "${INSTANCE_PUBLIC_IP}"
+                        
                         try {
                             sh 'sudo rm -r /home/deploy/.ssh/known_hosts'
                         } catch (err) {
@@ -58,10 +62,7 @@ pipeline {
                         sh 'python2 add_public_ip.py ansible/hosts'
                         echo 'Running ansible playbook to configure staging server'
                         sh 'cd ansible && ansible-playbook -b config_server.yml '
-                        script{
-                            env.INSTANCE_PUBLIC_IP= readFile '/tmp/ip.txt'
-                            echo "${INSTANCE_PUBLIC_IP}"
-                        }
+                        
 
                 }
             }
