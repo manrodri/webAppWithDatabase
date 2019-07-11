@@ -10,11 +10,13 @@ import argparse
 parser = argparse.ArgumentParser(description='command line tool to kill a previuous version and deploy new release candidate')
 
 parser.add_argument('port', help='port node application is running')
+parser.add_argument('artifact_version', help='version of the zip file to be deployed.')
 parser.add_argument('--version', '-v', action='version', version='%(prog)s 1.0')
 parser.add_argument('--debug', action='store_true')
 
 args = parser.parse_args()
 
+artifact = 'yelpCamp_{}'.format(args.artifact_version)
 
 def set_up_logger():
     # set logger
@@ -67,7 +69,7 @@ else:
 
 # retrieve artifact from artifactory
 os.chdir('/tmp')
-cmd = 'curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -O http://34.244.186.41:8081/artifactory/generic-local/yelpCamp.zip'
+cmd = 'curl -uadmin:AP4yc6KiPJbd7q36GqhzhxVHzFB -O http://artifactory:8081/artifactory/generic-local/{}.zip'.format(artifact)
 rc = execute_command_with_output(cmd, logger, message='Retrieving artifact')
 if not rc[0]:
   logger.error(rc[1])
@@ -78,10 +80,8 @@ else:
 
 
 # extract artifact
-path_to_zip_file = '/tmp/yelpCamp.zip'
+path_to_zip_file = '/tmp/{}.zip'.format(artifact)
 directory_to_extract_to = '/tmp/yelpCampApp/'
 
 with ZipFile(path_to_zip_file,"r") as zip_ref:
     zip_ref.extractall(directory_to_extract_to)
-
-
