@@ -3,8 +3,11 @@
   - name: update system
     shell: yum update -y
 
-  - name: run amazon-linux-extras install command
-    shell: amazon-linux-extras install docker
+  - name: add docker-ce-stable repo
+    shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+  - name: update system
+    shell: yum install -y docker-ce --nobest
   
   - name: allow jenkins to run docker commands
     shell: usermod -aG docker jenkins

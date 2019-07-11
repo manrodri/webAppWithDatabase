@@ -5,7 +5,7 @@ provider "aws" {
 }
 resource "aws_instance" "staging_server" {
 
-  ami = "ami-085362a9094e7b5be"
+  ami = "ami-054f62ee2d35a7b07"
   instance_type = "t2.micro"
   key_name      = "ireland"
   vpc_security_group_ids = ["sg-070c0bddc27ea3ebf"]
