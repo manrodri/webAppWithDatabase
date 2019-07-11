@@ -15,27 +15,33 @@ pipeline {
             steps{ 
                
                sh "curl -uadmin:AP2wbyNWUQRetr9rDNeQTGkTsqH -T dist/yelpCamp.zip http://artifactory:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip"
+               script{
+                   env.INSTANCE_PUBLIC_IP= readFile '/tmp/ip.txt'
+                   echo "${INSTANCE_PUBLIC_IP}"
+               }
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    app = docker.build("manrodri/yelpcamp")
-                }
-            }
-        }
-        stage('Push Docker Image') {
+
+
+        // stage('Build Docker Image') {
+        //     steps {
+        //         script {
+        //             app = docker.build("manrodri/yelpcamp")
+        //         }
+        //     }
+        // }
+        // stage('Push Docker Image') {
             
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerKey') {
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("latest")
-                    }
-                }
-            }
-        }
+        //     steps {
+        //         script {
+        //             docker.withRegistry('https://registry.hub.docker.com', 'dockerKey') {
+        //                 app.push("${env.BUILD_NUMBER}")
+        //                 app.push("latest")
+        //             }
+        //         }
+        //     }
+        // }
 
         // stage('Provision staging server'){
         //     steps{
@@ -43,6 +49,7 @@ pipeline {
         //         sh 'cd terraform && terraform init'
         //         sh "cd terraform && terraform plan -out=tfplan -input=false -var \"artifact_version=${env.BUILD_NUMBER}\""
         //         sh 'cd terraform && terraform apply -lock=false -input=false tfplan'
+                
 
         //     }
         // }
@@ -55,6 +62,7 @@ pipeline {
         //                 } catch (err) {
         //                     echo: 'caught error: $err'
         //                 }
+        //                 sh 'rm -rf ansible/hosts'
         //                 echo 'Running ansible playbook to configure staging server'
         //                 sh 'cd ansible && ansible-playbook -b config_server.yml '
 
