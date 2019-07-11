@@ -10,7 +10,7 @@ resource "aws_instance" "staging_server" {
   key_name      = "ireland"
   private_ip    = "172.131.3.101"
   vpc_security_group_ids = ["sg-070c0bddc27ea3ebf"]
-  subnet_id = "subnet-6eafc008"
+  
 
   connection {
     type     = "ssh"
