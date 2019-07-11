@@ -14,28 +14,28 @@ pipeline {
         stage('publish to artifactory'){
             steps{ 
                
-               sh "curl -uadmin:AP2wbyNWUQRetr9rDNeQTGkTsqH -T dist/yelpCamp.zip http://54.246.157.29:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip"
+               sh "curl -uadmin:AP2wbyNWUQRetr9rDNeQTGkTsqH -T dist/yelpCamp.zip http://artifactory:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip"
             }
         }
 
-        // stage('Build Docker Image') {
-        //     steps {
-        //         script {
-        //             app = docker.build("manrodri/yelpcamp")
-        //         }
-        //     }
-        // }
-        // stage('Push Docker Image') {
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    app = docker.build("manrodri/yelpcamp")
+                }
+            }
+        }
+        stage('Push Docker Image') {
             
-        //     steps {
-        //         script {
-        //             docker.withRegistry('https://registry.hub.docker.com', 'DockerHub') {
-        //                 app.push("${env.BUILD_NUMBER}")
-        //                 app.push("latest")
-        //             }
-        //         }
-        //     }
-        // }
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'DockerHub') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
+                }
+            }
+        }
 
         // stage('Provision staging server'){
         //     steps{
