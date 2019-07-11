@@ -59,7 +59,7 @@ pipeline {
                         } catch (err) {
                             echo: 'caught error: $err'
                         }
-                        
+                        sh 'sleep 20'
                         sh 'cat ansible/hosts'
                         echo 'Running ansible playbook to configure staging server'
                         sh 'cd ansible && ansible-playbook -b config_server.yml '
