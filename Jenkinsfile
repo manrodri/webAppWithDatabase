@@ -8,7 +8,7 @@ pipeline {
         //         archiveArtifacts artifacts: "dist/yelpCamp.zip"
                 
         //     }
-        }
+        // }
         // stage('publish to artifactory'){
         //     steps{ 
                
