@@ -85,16 +85,16 @@ pipeline {
         //         }
         //     }
         // }
-        stage('UAT'){
-            steps{
-                script{
-                    env.YELPCAMP_HOST = readFile '/jenkins_tmp/ip.txt'
-                    env.YELPCAMP_PORT = 3000
-                }
-                sh 'sleep 10'
-                sh "cd smokeTest && python2 -m unittest test_smoke"
-            }
-        }
+        // stage('UAT'){
+        //     steps{
+        //         script{
+        //             env.YELPCAMP_HOST = readFile '/jenkins_tmp/ip.txt'
+        //             env.YELPCAMP_PORT = 3000
+        //         }
+        //         sh 'sleep 10'
+        //         sh "cd smokeTest && python2 -m unittest test_smoke"
+        //     }
+        // }
         stage('Deploy to production'){ 
                 steps{
                     input 'Does the staging environment look OK?'
