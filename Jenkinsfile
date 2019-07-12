@@ -105,7 +105,7 @@ pipeline {
                         sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker stop yelpCamp\""
                         sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker rm yelpCamp\""
                         
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker run --restart always --name yelpCamp -p 80:3000  -d manrodri/yelpcamp:latest\""
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker run --restart always --name yelpCamp -p 80:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
                     }
                 }
 
@@ -116,7 +116,7 @@ pipeline {
                 script{
                     env.YELPCAMP_PORT = 80
                     sh 'sleep 10'
-                    sh "cd smokeTest && python -m unittest test_smoke"
+                    sh "cd smokeTest && python2 -m unittest test_smoke"
                 }
             }
         }
