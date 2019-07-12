@@ -8,7 +8,7 @@ class TestEndPointAreUp(unittest.TestCase):
         with open('/jenkins_tmp/ip.txt', 'r') as f:
             host = f.read().strip()
 
-        self.HOST = os.environ.get('YELPCAMP_HOST') or host
+        self.HOST = os.environ.get('YELPCAMP_HOST').strip() or host
         self.PORT = os.environ.get('YELPCAMP_PORT') or 3000
         self.url = 'http://{host}:{port}'.format(host=self.HOST, port=self.PORT)
         print(self.url)
