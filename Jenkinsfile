@@ -1,14 +1,14 @@
 pipeline {
     agent any
     stages {
-        // stage('Build') {
-        //     steps {
-        //         echo 'Running build automation'
-        //         sh './gradlew build'
-        //         archiveArtifacts artifacts: "dist/yelpCamp.zip"
+        stage('Build') {
+            steps {
+                echo 'Running build automation'
+                sh './gradlew build'
+                archiveArtifacts artifacts: "dist/yelpCamp.zip"
                 
-        //     }
-        // }
+            }
+        }
         // // stage('publish to artifactory'){
         // //     steps{ 
                
@@ -19,72 +19,72 @@ pipeline {
 
 
 
-        // stage('Build Docker Image') {
-        //     steps {
-        //         script {
-        //             app = docker.build("manrodri/yelpcamp")
-        //         }
-        //     }
-        // }
-        // stage('Push Docker Image') {
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    app = docker.build("manrodri/yelpcamp")
+                }
+            }
+        }
+        stage('Push Docker Image') {
             
-        //     steps {
-        //         script {
-        //             docker.withRegistry('https://registry.hub.docker.com', 'dockerKey') {
-        //                 app.push("${env.BUILD_NUMBER}")
-        //                 app.push("latest")
-        //             }
-        //         }
-        //     }
-        // }
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerKey') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
+                }
+            }
+        }
 
-        // stage('Provision staging server'){
-        //     steps{
-        //         echo 'Provisioning staging server with Terraform'
-        //         sh 'cd terraform && /opt/terraform/terraform init'
-        //         sh "cd terraform && /opt/terraform/terraform plan -out=tfplan -input=false -var \"artifact_version=${env.BUILD_NUMBER}\""
-        //         sh 'cd terraform && /opt/terraform/terraform apply -lock=false -input=false tfplan'
-        //     }
-        // }
+        stage('Provision staging server'){
+            steps{
+                echo 'Provisioning staging server with Terraform'
+                sh 'cd terraform && /opt/terraform/terraform init'
+                sh "cd terraform && /opt/terraform/terraform plan -out=tfplan -input=false -var \"artifact_version=${env.BUILD_NUMBER}\""
+                sh 'cd terraform && /opt/terraform/terraform apply -lock=false -input=false tfplan'
+            }
+        }
         
-        // stage('Configure staging server'){
-        //     steps{
-        //         script{
+        stage('Configure staging server'){
+            steps{
+                script{
                   
-        //                 try {
-        //                     sh 'sudo rm -r /home/deploy/.ssh/known_hosts'
-        //                 } catch (err) {
-        //                     echo: 'caught error: $err'
-        //                 }
-        //                 sh 'sleep 20'
-        //                 sh 'cat ansible/hosts'
-        //                 echo 'Running ansible playbook to configure staging server'
-        //                 sh 'cd ansible && ansible-playbook -b config_server.yml '
+                        try {
+                            sh 'sudo rm -r /home/deploy/.ssh/known_hosts'
+                        } catch (err) {
+                            echo: 'caught error: $err'
+                        }
+                        sh 'sleep 20'
+                        sh 'cat ansible/hosts'
+                        echo 'Running ansible playbook to configure staging server'
+                        sh 'cd ansible && ansible-playbook -b config_server.yml '
                         
 
-        //         }
-        //     }
-        // }
+                }
+            }
+        }
         
-        //     stage('Deploy To Staging Server') {
-        //     steps {
-        //         echo "`cat /jenkins_tmp/ip.txt`"
+            stage('Deploy To Staging Server') {
+            steps {
+                echo "`cat /jenkins_tmp/ip.txt`"
 
-        //         withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-        //             script{
-        //                 sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker pull manrodri/yelpcamp:${env.BUILD_NUMBER}\""
-        //                 try {
-        //                     sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker stop yelpCamp\""
-        //                     sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker rm yelpCamp\""
-        //                 } catch (err) {
-        //                     echo: 'caught error: $err'
-        //                 }
-        //                 sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker run  --name yelpCamp -p 3000:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
+                withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                    script{
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker pull manrodri/yelpcamp:${env.BUILD_NUMBER}\""
+                        try {
+                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker stop yelpCamp\""
+                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker rm yelpCamp\""
+                        } catch (err) {
+                            echo: 'caught error: $err'
+                        }
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker run  --name yelpCamp -p 3000:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
 
-        //             }
-        //         }
-        //     }
-        // }
+                    }
+                }
+            }
+        }
         stage('UAT'){
             steps{
                 script{
