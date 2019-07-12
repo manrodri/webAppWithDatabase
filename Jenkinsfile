@@ -9,16 +9,6 @@ pipeline {
                 
             }
         }
-       stage('publish to artifactory'){
-             steps{ 
-               
-              sh "curl -uadmin:AP5ANpRzefchDX235LQGLdKZtTv -T dist/yelpCamp.zip \"http://34.245.175.210:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip\""
-       
-               
-            }
-         }
-
-
 
         stage('Build Docker Image') {
             steps {
@@ -63,7 +53,7 @@ pipeline {
                         sh 'sleep 20'
                         sh 'cat ansible/hosts'
                         echo 'Running ansible playbook to configure staging server'
-                        sh 'cd ansible && ansible-playbook -b config_server.yml '
+                        sh 'cd ansible && ansible-playbook -i hosts docker.yml '
                         
 
                 }
@@ -122,6 +112,15 @@ pipeline {
                 }
             }
         }
+
+        stage('publish to artifactory'){
+             steps{ 
+               
+              sh "curl -uadmin:AP5ANpRzefchDX235LQGLdKZtTv -T dist/yelpCamp.zip \"http://34.245.175.210:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip\""
+       
+               
+            }
+         }
     }
 }
 
