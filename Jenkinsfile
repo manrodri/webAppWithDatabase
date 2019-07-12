@@ -53,7 +53,7 @@ pipeline {
                 script{
                        env.YELPCAMP_HOST = readFile '/jenkins_tmp/ip.txt'
                        env.YELPCAMP_PORT = 3000
-                       python2 add_argument ansible/hosts
+                       sh 'python2 add_argument ansible/hosts'
                        sh 'cat ansible/hosts'
                         try {
                             sh 'sudo rm -r /home/deploy/.ssh/known_hosts'
