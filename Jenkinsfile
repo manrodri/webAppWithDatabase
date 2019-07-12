@@ -95,31 +95,31 @@ pipeline {
                 sh "cd smokeTest && python2 -m unittest test_smoke"
             }
         }
-        // stage('Deploy to production'){ 
-        //         steps{
-        //             input 'Does the staging environment look OK?'
-        //             milestone(1)
-        //             withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-        //             script{
+        stage('Deploy to production'){ 
+                steps{
+                    input 'Does the staging environment look OK?'
+                    milestone(1)
+                    withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                    script{
                         
-        //                 sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker stop yelpCamp\""
-        //                 sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker rm yelpCamp\""
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker stop yelpCamp\""
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker rm yelpCamp\""
                         
-        //                 sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /tmp/public_ip.txt` \"docker run --restart always --name yelpCamp -p 80:3000  -d manrodri/yelpcamp:latest\""
-        //             }
-        //         }
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker run --restart always --name yelpCamp -p 80:3000  -d manrodri/yelpcamp:latest\""
+                    }
+                }
 
-        //     }
-        // }
-        // stage('smoke test'){
-        //     steps{
-        //         script{
-        //             env.YELPCAMP_PORT = 80
-        //             sh 'sleep 10'
-        //             sh "cd smokeTest && python -m unittest test_smoke"
-        //         }
-        //     }
-        // }
+            }
+        }
+        stage('smoke test'){
+            steps{
+                script{
+                    env.YELPCAMP_PORT = 80
+                    sh 'sleep 10'
+                    sh "cd smokeTest && python -m unittest test_smoke"
+                }
+            }
+        }
     }
 }
 
