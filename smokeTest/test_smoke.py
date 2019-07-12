@@ -5,7 +5,7 @@ import os
 class TestEndPointAreUp(unittest.TestCase):
 
     def setUp(self):
-        with open('/jenkins_tmp/public_ip.txt', 'r') as f:
+        with open('/jenkins_tmp/ip.txt', 'r') as f:
             host = f.read().strip()
 
         self.HOST = os.environ.get('YELPCAMP_HOST') or host

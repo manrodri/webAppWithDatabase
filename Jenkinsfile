@@ -90,7 +90,7 @@ pipeline {
                 script{
                     env.YELPCAMP_HOST = readFile '/jenkins_tmp/ip.txt'
                 }
-                sh 'sleep 20'
+                sh 'sleep 10'
                 sh "cd smokeTest && python2 -m unittest test_smoke"
             }
         }
