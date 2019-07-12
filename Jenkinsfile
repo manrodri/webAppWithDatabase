@@ -88,7 +88,7 @@ pipeline {
         stage('UAT'){
             steps{
                 script{
-                    env.YELPCAMP_HOST = sh "`cat /jenkins_tmp/ip.txt`"
+                    env.YELPCAMP_HOST = readFile '/jenkins_tmp/ip.txt'
                 }
                 sh 'sleep 20'
                 sh "cd smokeTest && python2 -m unittest test_smoke"
