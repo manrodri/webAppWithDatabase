@@ -9,13 +9,14 @@ pipeline {
                 
             }
         }
-        // // // stage('publish to artifactory'){
-        // // //     steps{ 
+       stage('publish to artifactory'){
+             steps{ 
                
-        // // //        sh "curl -uadmin:AP2wbyNWUQRetr9rDNeQTGkTsqH -T dist/yelpCamp.zip http://54.246.157.29:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip"
+              sh "curl -uadmin:AP5ANpRzefchDX235LQGLdKZtTv -T dist/yelpCamp.zip \"http://34.245.175.210:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip\""
+       
                
-        // // //     }
-        // // // }
+            }
+         }
 
 
 
@@ -50,7 +51,10 @@ pipeline {
         stage('Configure staging server'){
             steps{
                 script{
-                  
+                       env.YELPCAMP_HOST = readFile '/jenkins_tmp/ip.txt'
+                       env.YELPCAMP_PORT = 3000
+                       python2 add_argument ansible/hosts
+                       sh 'cat ansible/hosts'
                         try {
                             sh 'sudo rm -r /home/deploy/.ssh/known_hosts'
                         } catch (err) {
@@ -69,6 +73,7 @@ pipeline {
             stage('Deploy To Staging Server') {
             steps {
                 echo "`cat /jenkins_tmp/ip.txt`"
+                
 
                 withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     script{
@@ -87,10 +92,7 @@ pipeline {
         }
         stage('UAT'){
             steps{
-                script{
-                    env.YELPCAMP_HOST = readFile '/jenkins_tmp/ip.txt'
-                    env.YELPCAMP_PORT = 3000
-                }
+                
                 sh 'sleep 10'
                 sh "cd smokeTest && python2 -m unittest test_smoke"
             }
