@@ -17,6 +17,9 @@
   
   - name: install docker
     shell: sudo apt-get install -y  docker-ce docker-ce-cli containerd.io
+  
+  - name: 
+    shell: sudo chmod 777 /var/run/docker.sock
 
   - name: Ensure docker is running and and enabled to start automatically on reboots
     systemd:
