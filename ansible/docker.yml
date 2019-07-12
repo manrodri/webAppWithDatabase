@@ -1,30 +1,65 @@
 ---
-- hosts: staging
-  become: true
+- name: Install docker
+  gather_facts: No
+  hosts: staging
 
   tasks:
-    - name: Install aptitude using apt
-      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+    - name: Install yum utils
+      yum:
+        name: yum-utils
+        state: latest
 
-    - name: Install required system packages
-      apt: name={{ item }} state=latest update_cache=yes
-      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+    - name: Install device-mapper-persistent-data
+      yum:
+        name: device-mapper-persistent-data
+        state: latest
 
-    - name: Add Docker GPG apt Key
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
+    - name: Install lvm2
+      yum:
+        name: lvm2
+        state: latest
 
-    - name: Add Docker Repository
-      apt_repository:
-        repo: deb https://download.docker.com/linux/ubuntu bionic stable
-        state: present
+    - name: Add Docker repo
+      get_url:
+        url: https://download.docker.com/linux/centos/docker-ce.repo
+        dest: /etc/yum.repos.d/docer-ce.repo
+      become: yes
 
-    - name: Update apt and install docker-ce
-      apt: update_cache=yes name=docker-ce state=latest
-    
-    - name: add jenkins to docker group
-      shell: usermod -aG docker jenkins
+    - name: Enable Docker Edge repo
+      ini_file:
+        dest: /etc/yum.repos.d/docer-ce.repo
+        section: 'docker-ce-edge'
+        option: enabled
+        value: 0
+      become: yes
+
+    - name: Enable Docker Test repo
+      ini_file:
+        dest: /etc/yum.repos.d/docer-ce.repo
+        section: 'docker-ce-test'
+        option: enabled
+        value: 0
+      become: yes
+
+    - name: Install Docker
+      package:
+        name: docker-ce
+        state: latest
+      become: yes
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+      become: yes
+
+    - name: Add user jenkins to docker group
+      user:
+        name: jenkins
+        groups: docker
+        append: yes
+      become: yes
     
     - name: chmode sock
       shell: chmod 777 /var/run/docker.sock
