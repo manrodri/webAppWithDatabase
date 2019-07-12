@@ -2,21 +2,8 @@
   - name: update system
     shell: apt-get update
 
-  - name: install https packages
-    shell: apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common sshpass
-  
-  - name: add key
-    shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  
-  - name: add repo
-    shell: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-
- 
-  - name: update system
-    shell: apt-get update 
-  
   - name: install docker
-    shell: sudo apt-get install -y  docker-ce docker-ce-cli containerd.io
+    shell: sudo amazon-linux-extras install -y docker
   
   - name: 
     shell: sudo chmod 777 /var/run/docker.sock
