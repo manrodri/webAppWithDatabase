@@ -13,8 +13,7 @@ var commentsRoutes      = require('./routes/comments'),
     campgroundsRoutes   = require('./routes/campgrounds'),
     indexRoutes          = require("./routes/index");
     
-databeseUrl = process.env.DATABASE_URL
-// "mongodb://10.10.11.117/yelp_camp_5"
+databeseUrl = "mongodb://10.10.11.117/yelp_camp_5"
 mongoose.connect(databeseUrl, { useNewUrlParser: true });
 
 app.use(methodOverride('_method'));
