@@ -22,7 +22,6 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerKey') {
-                        app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
                 }
@@ -38,13 +37,13 @@ pipeline {
             }
         }
         
-        stage('Configure staging server'){
+        stage('Configure server'){
             steps{
                 script{
+                       
                        env.YELPCAMP_HOST = readFile '/jenkins_tmp/ip.txt'
                        env.YELPCAMP_PORT = 3000
                        sh 'python2 add_public_ip.py /jenkins_tmp/ip.txt ansible/hosts'
-                       sh 'cat ansible/hosts'
                         try {
                             sh 'sudo rm -r /home/deploy/.ssh/known_hosts'
                         } catch (err) {
@@ -55,31 +54,30 @@ pipeline {
                         echo 'Running ansible playbook to configure staging server'
                         sh 'cd ansible && ansible-playbook -i hosts docker.yml '
                         
-
                 }
             }
         }
         
-            stage('Deploy To Staging Server') {
+            stage('Deploy Server') {
             steps {
+                sh 'cd ansible && ansible-playbook -i hosts deploy_container_staging.yml'
                 echo "`cat /jenkins_tmp/ip.txt`"
-                
+                //withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                    //script{
+                        
+                        // sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker pull manrodri/yelpcamp:${env.BUILD_NUMBER}\""
+                        // try {
+                        //     sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker stop yelpCamp\""
+                        //     sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker rm yelpCamp\""
+                        // } catch (err) {
+                        //     echo: 'caught error: $err'
+                        // }
+                        // sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker run  --name yelpCamp -p 3000:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
 
-                withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-                    script{
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker pull manrodri/yelpcamp:${env.BUILD_NUMBER}\""
-                        try {
-                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker stop yelpCamp\""
-                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker rm yelpCamp\""
-                        } catch (err) {
-                            echo: 'caught error: $err'
-                        }
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker run  --name yelpCamp -p 3000:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
-
-                    }
+                   // }
                 }
             }
-        }
+       // }
         stage('UAT'){
             steps{
                 
@@ -91,18 +89,19 @@ pipeline {
                 steps{
                     input 'Does the staging environment look OK?'
                     milestone(1)
-                    withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-                    script{
+                    sh 'cd ansible && ansible-playbook -i hosts deploy_container_prod.yml'
+                    //withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                    //script{
                         
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker stop yelpCamp\""
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker rm yelpCamp\""
+                        //sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker stop yelpCamp\""
+                        //sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker rm yelpCamp\""
                         
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker run --restart always --name yelpCamp -p 80:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
-                    }
+                        //sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker run --restart always --name yelpCamp -p 80:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
+                    //}
                 }
 
             }
-        }
+       // }
         stage('smoke test'){
             steps{
                 script{
@@ -113,14 +112,14 @@ pipeline {
             }
         }
 
-        stage('publish to artifactory'){
-             steps{ 
+        // stage('publish to artifactory'){
+        //      steps{ 
                
-              sh "curl -uadmin:AP5ANpRzefchDX235LQGLdKZtTv -T dist/yelpCamp.zip \"http://34.245.175.210:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip\""
+        //       sh "curl -uadmin:AP5ANpRzefchDX235LQGLdKZtTv -T dist/yelpCamp.zip \"http://34.245.175.210:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip\""
        
                
-            }
-         }
+        //     }
+        //  }
     }
 }
 

@@ -1,0 +1,12 @@
+- hosts: staging
+  tasks:
+    - name: set DATABASE_URL
+      shell: "export DATABASE_URL=$URL"
+      environment:
+        URL: mongodb://10.10.11.117/yelp_camp_5
+    
+    - name: Create a data container
+      docker_container:
+        name: mydata
+        image: yelp_camp:latest
+        published_ports: 3000:3000

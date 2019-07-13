@@ -42,9 +42,7 @@
       become: yes
 
     - name: Install Docker
-      package:
-        name: docker-ce
-        state: latest
+      shell: yum -y install docker-ce --nobest
       become: yes
 
     - name: Start Docker service

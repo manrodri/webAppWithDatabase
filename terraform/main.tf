@@ -5,7 +5,7 @@ provider "aws" {
 }
 resource "aws_instance" "staging_server" {
 
-  ami = "ami-00dcc1f173616a7b3"
+  ami = "ami-054f62ee2d35a7b07"
   instance_type = "t2.micro"
   key_name      = "ireland"
   subnet_id = "subnet-0c8c4704d89a2a892"
