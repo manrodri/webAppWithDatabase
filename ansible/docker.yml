@@ -62,6 +62,9 @@
     
     - name: chmode sock
       shell: chmod 777 /var/run/docker.sock
+     
+    - name: install docker sdk for python
+      shell: pip2 install docker
     
     - name: Ensure docker is running and and enabled to start automatically on reboots
       systemd:

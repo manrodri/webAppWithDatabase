@@ -1,32 +1,32 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
-            steps {
-                echo 'Running build automation'
-                sh './gradlew build'
-                archiveArtifacts artifacts: "dist/yelpCamp.zip"
+        // stage('Build') {
+        //     steps {
+        //         echo 'Running build automation'
+        //         sh './gradlew build'
+        //         archiveArtifacts artifacts: "dist/yelpCamp.zip"
                 
-            }
-        }
+        //     }
+        // }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    app = docker.build("manrodri/yelpcamp")
-                }
-            }
-        }
-        stage('Push Docker Image') {
+        // stage('Build Docker Image') {
+        //     steps {
+        //         script {
+        //             app = docker.build("manrodri/yelpcamp")
+        //         }
+        //     }
+        // }
+        // stage('Push Docker Image') {
             
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerKey') {
-                        app.push("latest")
-                    }
-                }
-            }
-        }
+        //     steps {
+        //         script {
+        //             docker.withRegistry('https://registry.hub.docker.com', 'dockerKey') {
+        //                 app.push("latest")
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Provision staging server'){
             steps{
@@ -44,15 +44,9 @@ pipeline {
                        env.YELPCAMP_HOST = readFile '/jenkins_tmp/ip.txt'
                        env.YELPCAMP_PORT = 3000
                        sh 'python2 add_public_ip.py /jenkins_tmp/ip.txt ansible/hosts'
-                        try {
-                            sh 'sudo rm -r /home/deploy/.ssh/known_hosts'
-                        } catch (err) {
-                            echo: 'caught error: $err'
-                        }
-                        sh 'sleep 20'
-                        sh 'cat ansible/hosts'
-                        echo 'Running ansible playbook to configure staging server'
-                        sh 'cd ansible && ansible-playbook -i hosts docker.yml '
+                       sh 'sleep 20'
+                       echo 'Running ansible playbook to configure staging server'
+                       sh 'cd ansible && ansible-playbook -i hosts docker.yml '
                         
                 }
             }
