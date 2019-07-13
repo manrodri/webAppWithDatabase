@@ -1,10 +1,5 @@
 - hosts: staging
   tasks:
-    - name: set DATABASE_URL
-      shell: "export DATABASE_URL=$URL"
-      environment:
-        URL: mongodb://10.10.11.117/yelp_camp_5
-
     - name: pull image 
       shell: docker pull manrodri/yelpcamp:latest
     
