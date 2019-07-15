@@ -66,30 +66,30 @@ pipeline {
                 sh "cd smokeTest && python2 -m unittest test_smoke"
             }
         }
-        // stage('Deploy to production'){ 
-        //         steps{
-        //             input 'Does the staging environment look OK?'
-        //             milestone(1)
-        //             sh 'cd ansible && ansible-playbook -i hosts deploy_container_prod.yml'
-        //         }
+        stage('Deploy to production'){ 
+                steps{
+                    input 'Does the staging environment look OK?'
+                    milestone(1)
+                    sh 'cd ansible && ansible-playbook -i hosts deploy_container_prod.yml --extra-vars \"build_number=${env.BUILD_NUMBER}\"'
+                }
 
-        //     }
+            }
        
-        // stage('smoke test'){
-        //     steps{
-        //         script{
-        //             env.YELPCAMP_PORT = 80
-        //             sh 'sleep 10'
-        //             sh "cd smokeTest && python2 -m unittest test_smoke"
-        //         }
-        //     }
-        // }
+        stage('smoke test'){
+            steps{
+                script{
+                    env.YELPCAMP_PORT = 80
+                    sh 'sleep 10'
+                    sh "cd smokeTest && python2 -m unittest test_smoke"
+                }
+            }
+        }
 
-        // stage('publish to artifactory'){
-        //      steps{   
-        //       sh "curl -uadmin:AP5ANpRzefchDX235LQGLdKZtTv -T dist/yelpCamp.zip \"http://artifactory:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip\"" 
-        //     }
-        //  }
+        stage('publish to artifactory'){
+             steps{   
+              sh "curl -uadmin:AP5ANpRzefchDX235LQGLdKZtTv -T dist/yelpCamp.zip \"http://artifactory:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip\"" 
+            }
+         }
     }
 }
     

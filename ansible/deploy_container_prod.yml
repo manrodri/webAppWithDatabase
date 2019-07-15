@@ -1,7 +1,7 @@
 - hosts: staging
   tasks:
     - name: pull image 
-      shell: docker pull manrodri/yelpcamp:latest
+      shell: docker pull manrodri/yelpcamp:{{ build_number }}
     
     - name: stop container
       shell: docker stop yelpCamp
@@ -10,6 +10,6 @@
       shell: docker rm yelpCamp
     
     - name: run container on port 80 with restart always policy
-      shell: docker run  --name yelpCamp -p 3000:3000  -d manrodri/yelpcamp:latest
+      shell: docker run  --name yelpCamp -p 80:3000  -d manrodri/yelpcamp:{{ build_number }}
 
     
