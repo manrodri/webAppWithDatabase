@@ -70,7 +70,7 @@ pipeline {
                 steps{
                     input 'Does the staging environment look OK?'
                     milestone(1)
-                    sh 'cd ansible && ansible-playbook -i hosts deploy_container_prod.yml --extra-vars \"build_number=${env.BUILD_NUMBER}\"'
+                    sh "cd ansible && ansible-playbook -i hosts deploy_container_prod.yml --extra-vars \"build_number=${env.BUILD_NUMBER}\""
                 }
 
             }
