@@ -2,11 +2,9 @@ plugins {
   //inlude the nodeJS plugin to execute nodejs and npm tasks
   id "com.moowork.node" version "1.2.0"
 }
-
 node {
 	download = true
 }
-
 //declare a build task
 task build
 
@@ -24,7 +22,6 @@ task zip(type: Zip) {
 	destinationDir(file("dist"))
 	baseName "yelpCamp"
 }
-
 //declare task dependencies
 build.dependsOn zip
 //build.dependsOn zipRunScript
