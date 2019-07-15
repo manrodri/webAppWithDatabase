@@ -11,4 +11,4 @@
       shell: docker pull manrodri/yelpcamp:{{ build_number }}
     
     - name: run container on port 3000
-      shell: docker run  --name yelpCamp -p 3000:3000  -d manrodri/yelpcamp:latest
+      shell: docker run  --name yelpCamp -p 3000:3000  -d manrodri/yelpcamp:{{ build_number }}
