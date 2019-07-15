@@ -22,7 +22,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerKey') {
-                        app.push("latest")
+                         app.push("${env.BUILD_NUMBER}")
+                         app.push("latest")
                     }
                 }
             }
@@ -54,24 +55,10 @@ pipeline {
         
             stage('Deploy Server') {
             steps {
-                sh 'cd ansible && ansible-playbook -i hosts deploy_container_staging.yml'
-                echo "`cat /jenkins_tmp/ip.txt`"
-                //withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-                    //script{
-                        
-                        // sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker pull manrodri/yelpcamp:${env.BUILD_NUMBER}\""
-                        // try {
-                        //     sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker stop yelpCamp\""
-                        //     sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker rm yelpCamp\""
-                        // } catch (err) {
-                        //     echo: 'caught error: $err'
-                        // }
-                        // sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker run  --name yelpCamp -p 3000:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
-
-                   // }
+                sh "cd ansible && ansible-playbook -i hosts deploy_container_staging.yml --extra-vars \"build_number=${env.BUILD_NUMBER}\""
                 }
             }
-       // }
+       
         stage('UAT'){
             steps{
                 
@@ -79,41 +66,32 @@ pipeline {
                 sh "cd smokeTest && python2 -m unittest test_smoke"
             }
         }
-        stage('Deploy to production'){ 
-                steps{
-                    input 'Does the staging environment look OK?'
-                    milestone(1)
-                    sh 'cd ansible && ansible-playbook -i hosts deploy_container_prod.yml'
-                    //withCredentials([usernamePassword(credentialsId: 'jenkins_webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-                    //script{
-                        
-                        //sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker stop yelpCamp\""
-                        //sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker rm yelpCamp\""
-                        
-                        //sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@`cat /jenkins_tmp/ip.txt` \"docker run --restart always --name yelpCamp -p 80:3000  -d manrodri/yelpcamp:${env.BUILD_NUMBER}\""
-                    //}
-                }
+        // stage('Deploy to production'){ 
+        //         steps{
+        //             input 'Does the staging environment look OK?'
+        //             milestone(1)
+        //             sh 'cd ansible && ansible-playbook -i hosts deploy_container_prod.yml'
+        //         }
 
-            }
-       // }
-        stage('smoke test'){
-            steps{
-                script{
-                    env.YELPCAMP_PORT = 80
-                    sh 'sleep 10'
-                    sh "cd smokeTest && python2 -m unittest test_smoke"
-                }
-            }
-        }
+        //     }
+       
+        // stage('smoke test'){
+        //     steps{
+        //         script{
+        //             env.YELPCAMP_PORT = 80
+        //             sh 'sleep 10'
+        //             sh "cd smokeTest && python2 -m unittest test_smoke"
+        //         }
+        //     }
+        // }
 
         // stage('publish to artifactory'){
-        //      steps{ 
-               
-        //       sh "curl -uadmin:AP5ANpRzefchDX235LQGLdKZtTv -T dist/yelpCamp.zip \"http://34.245.175.210:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip\""
-       
-               
+        //      steps{   
+        //       sh "curl -uadmin:AP5ANpRzefchDX235LQGLdKZtTv -T dist/yelpCamp.zip \"http://artifactory:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip\"" 
         //     }
         //  }
     }
 }
+    
+
 
