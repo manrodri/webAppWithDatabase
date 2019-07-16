@@ -1,23 +1,24 @@
-var express     = require("express"),
-    app         = express(),
-    passport    = require('passport'),
+var express = require("express"),
+    app = express(),
+    passport = require('passport'),
     LocalStrategy = require('passport-local'),
-    bodyParser  = require("body-parser"),
-    mongoose    = require("mongoose"),
+    bodyParser = require("body-parser"),
+    mongoose = require("mongoose"),
     methodOverride = require('method-override'),
-    User        = require("./models/user");
-    seedDB      = require("./seeds"),
-    port        = 3000;
+    User = require("./models/user");
+seedDB = require("./seeds"),
+    port = 3000;
 
-var commentsRoutes      = require('./routes/comments'),
-    campgroundsRoutes   = require('./routes/campgrounds'),
-    indexRoutes          = require("./routes/index");
-    
+var commentsRoutes = require('./routes/comments'),
+    campgroundsRoutes = require('./routes/campgrounds'),
+    indexRoutes = require("./routes/index");
 
-mongoose.connect("mongodb://10.10.11.117/yelp_camp_5", { useNewUrlParser: true });
+// "mongodb://10.10.11.117/yelp_camp_5"
+databaseUrl = process.env.DATABASE_URL
+mongoose.connect(databaseUrl, { useNewUrlParser: true });
 
 app.use(methodOverride('_method'));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 seedDB();
@@ -39,6 +40,6 @@ app.use(indexRoutes);
 app.use('/campgrounds', campgroundsRoutes);
 app.use('/campgrounds/:id/comments', commentsRoutes);
 
-app.listen(port, function(){
+app.listen(port, function() {
     console.log("The YelpCamp Server Has Started!");
- });
+});
