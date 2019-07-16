@@ -29,10 +29,8 @@ with open(sys.argv[1], 'r') as f:
 with open(hosts_path, 'r') as f:
     lines = [line for line in f]
 
-
 p = re.compile(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")
 lines[-1] = p.sub(public_ip, lines[-1])
-
 
 os.remove(hosts_path)
 logger.info('host file removed')
