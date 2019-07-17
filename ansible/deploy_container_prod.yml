@@ -10,6 +10,6 @@
       shell: docker rm yelpCamp
     
     - name: run container on port 80 with restart always policy
-      shell: docker run  --name yelpCamp -p 80:3000  -d manrodri/yelpcamp:{{ build_number }}
+      shell: docker run  --name yelpCamp -p 80:3000  --restart=always -d manrodri/yelpcamp:{{ build_number }}
 
     
