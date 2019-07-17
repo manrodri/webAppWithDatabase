@@ -5,8 +5,7 @@ pipeline {
             steps {
                 echo 'Running build automation'
                 sh './gradlew build'
-                archiveArtifacts artifacts: "dist/yelpCamp.zip"
-                
+                archiveArtifacts artifacts: "dist/yelpCamp.zip"   
             }
         }
 
@@ -18,7 +17,6 @@ pipeline {
             }
         }
         stage('Push Docker Image') {
-            
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerKey') {
@@ -40,40 +38,37 @@ pipeline {
         
         stage('Configure server'){
             steps{
-                script{
-                       
-                       env.YELPCAMP_HOST = readFile '/jenkins_tmp/ip.txt'
-                       env.YELPCAMP_PORT = 3000
-                       sh 'python2 add_public_ip.py /jenkins_tmp/ip.txt ansible/hosts'
-                       sh 'sleep 20'
-                       echo 'Running ansible playbook to configure staging server'
-                       sh 'cd ansible && ansible-playbook -i hosts docker.yml '
-                        
+                script{      
+                    env.YELPCAMP_HOST = readFile '/jenkins_tmp/ip.txt'
+                    env.YELPCAMP_PORT = 3000
+                    sh 'python2 add_public_ip.py /jenkins_tmp/ip.txt ansible/hosts'
+                    sh 'sleep 20'
+                    echo 'Running ansible playbook to configure staging server'
+                    sh 'cd ansible && ansible-playbook -i hosts docker.yml '
                 }
             }
         }
         
-            stage('Deploy Server') {
+        stage('Deploy Server') {
             steps {
                 sh "cd ansible && ansible-playbook -i hosts deploy_container_staging.yml --extra-vars \"build_number=${env.BUILD_NUMBER}\""
-                }
             }
+        }
        
         stage('UAT'){
-            steps{
-                
+            steps{     
                 sh 'sleep 10'
                 sh "cd smokeTest && python2 -m unittest test_smoke"
             }
         }
-        stage('Deploy to production'){ 
-                steps{
-                    input 'Does the staging environment look OK?'
-                    milestone(1)
-                    sh "cd ansible && ansible-playbook -i hosts deploy_container_prod.yml --extra-vars \"build_number=${env.BUILD_NUMBER}\""
-                }
 
+        stage('Deploy to production'){ 
+            steps{
+                input 'Does the staging environment look OK?'
+                milestone(1)
+                sh "cd ansible && ansible-playbook -i hosts deploy_container_prod.yml --extra-vars \"build_number=${env.BUILD_NUMBER}\""
             }
+        }
        
         stage('smoke test'){
             steps{
