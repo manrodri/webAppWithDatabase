@@ -38,20 +38,20 @@ pipeline {
             }
         }
         
-        stage('Configure server'){
-            steps{
-                script{
+        // stage('Configure server'){
+        //     steps{
+        //         script{
                        
-                       env.YELPCAMP_HOST = readFile '/jenkins_tmp/ip.txt'
-                       env.YELPCAMP_PORT = 3000
-                       sh 'python2 add_public_ip.py /jenkins_tmp/ip.txt ansible/hosts'
-                       sh 'sleep 20'
-                       echo 'Running ansible playbook to configure staging server'
-                       sh 'cd ansible && ansible-playbook -i hosts docker.yml '
+        //                env.YELPCAMP_HOST = readFile '/jenkins_tmp/ip.txt'
+        //                env.YELPCAMP_PORT = 3000
+        //                sh 'python2 add_public_ip.py /jenkins_tmp/ip.txt ansible/hosts'
+        //                sh 'sleep 20'
+        //                echo 'Running ansible playbook to configure staging server'
+        //                sh 'cd ansible && ansible-playbook -i hosts docker.yml '
                         
-                }
-            }
-        }
+        //         }
+        //     }
+        // }
         
             stage('Deploy Server') {
             steps {
