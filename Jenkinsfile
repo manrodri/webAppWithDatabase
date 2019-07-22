@@ -85,11 +85,11 @@ pipeline {
             }
         }
 
-        stage('publish to artifactory'){
-             steps{   
-              sh "curl -uadmin:AP5ANpRzefchDX235LQGLdKZtTv -T dist/yelpCamp.zip \"http://artifactory:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip\"" 
-            }
-         }
+        // stage('publish to artifactory'){
+        //      steps{   
+        //       sh "curl -uadmin:AP5ANpRzefchDX235LQGLdKZtTv -T dist/yelpCamp.zip \"http://artifactory:8081/artifactory/generic-local/yelpCamp_${env.BUILD_NUMBER}.zip\"" 
+        //     }
+        //  }
     }
 }
   
