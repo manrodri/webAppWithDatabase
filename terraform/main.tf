@@ -11,19 +11,8 @@ resource "aws_instance" "staging_server" {
   subnet_id = "subnet-05e96d0ea715be1fc"
   
 
-  connection {
-    type     = "ssh"
-    user     = "jenkins"
-   password = "${var.jenkins_password}"
-  }
-
   provisioner "local-exec"{
     command = "echo ${aws_instance.staging_server.private_ip} > /jenkins_tmp/ip.txt"
-  }
-
-  provisioner "file" {
-    source      = "/jenkins_tmp/ip.txt"
-    destination = "/tmp/ip.txt"
   }
 
   tags = {
