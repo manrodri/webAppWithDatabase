@@ -7,9 +7,9 @@ resource "aws_instance" "staging_server" {
 
   ami = "ami-054f62ee2d35a7b07"
   instance_type = "t2.micro"
-  key_name      = "ireland"
-  subnet_id = "subnet-0c8c4704d89a2a892"
-  vpc_security_group_ids = ["sg-036e368df116c1235"]
+  key_name      = "manuel_jce"
+  subnet_id = "subnet-05e96d0ea715be1fc"
+  vpc_security_group_ids = ["sg-0d7419d6d15cba7e0"]
   
   
 
@@ -20,7 +20,7 @@ resource "aws_instance" "staging_server" {
   }
 
   provisioner "local-exec"{
-    command = "echo ${aws_instance.staging_server.public_ip} > /jenkins_tmp/ip.txt"
+    command = "echo ${aws_instance.staging_server.private_key} > /jenkins_tmp/ip.txt"
   }
 
   connection {
