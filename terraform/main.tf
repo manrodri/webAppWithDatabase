@@ -21,7 +21,10 @@ resource "aws_instance" "staging_server" {
     private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
   }
 
-
+provisioner "file" {
+    source      = "/jenkins_tmp/ip.txt"
+    destination = "/tmp/ip.txt"
+  }
 
   tags = {
     Name = "server deployed by Terraform"
