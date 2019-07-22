@@ -9,7 +9,6 @@ resource "aws_instance" "staging_server" {
   instance_type = "t2.micro"
   key_name      = "manuel_jce"
   subnet_id = "subnet-05e96d0ea715be1fc"
-  vpc_security_group_ids = ["sg-0d7419d6d15cba7e0"]
   
 
   connection {
