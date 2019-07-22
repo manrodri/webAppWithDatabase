@@ -20,13 +20,7 @@ resource "aws_instance" "staging_server" {
   }
 
   provisioner "local-exec"{
-    command = "echo ${aws_instance.staging_server.private_key} > /jenkins_tmp/ip.txt"
-  }
-
-  connection {
-    type     = "ssh"
-    user     = "jenkins"
-    private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
+    command = "echo ${aws_instance.staging_server.private_ip} > /jenkins_tmp/ip.txt"
   }
 
   provisioner "file" {
