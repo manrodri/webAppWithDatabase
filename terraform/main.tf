@@ -12,12 +12,17 @@ resource "aws_instance" "staging_server" {
   vpc_security_group_ids = ["sg-0d7419d6d15cba7e0"]
   
   
-
-  connection {
+connection {
     type     = "ssh"
     user     = "jenkins"
-    private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
+    password = "${var.jenkins_password}"
   }
+}
+  // connection {
+  //   type     = "ssh"
+  //   user     = "jenkins"
+  //   private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
+  // }
 
   provisioner "local-exec"{
     command = "echo ${aws_instance.staging_server.private_ip} > /jenkins_tmp/ip.txt"
