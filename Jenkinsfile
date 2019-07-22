@@ -1,33 +1,33 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
-            steps {
-                echo 'Running build automation'
-                sh './gradlew build'
-                archiveArtifacts artifacts: "dist/yelpCamp.zip"
+        // stage('Build') {
+        //     steps {
+        //         echo 'Running build automation'
+        //         sh './gradlew build'
+        //         archiveArtifacts artifacts: "dist/yelpCamp.zip"
                 
-            }
-        }
+        //     }
+        // }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    app = docker.build("manrodri/yelpcamp")
-                }
-            }
-        }
-        stage('Push Docker Image') {
+        // stage('Build Docker Image') {
+        //     steps {
+        //         script {
+        //             app = docker.build("manrodri/yelpcamp")
+        //         }
+        //     }
+        // }
+        // stage('Push Docker Image') {
             
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'DockerHub') {
-                         app.push("${env.BUILD_NUMBER}")
-                         app.push("latest")
-                    }
-                }
-            }
-        }
+        //     steps {
+        //         script {
+        //             docker.withRegistry('https://registry.hub.docker.com', 'DockerHub') {
+        //                  app.push("${env.BUILD_NUMBER}")
+        //                  app.push("latest")
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Provision staging server'){
             steps{
