@@ -8,7 +8,7 @@ resource "aws_instance" "staging_server" {
   ami = "ami-0a901aa2ba3f90afa"
   instance_type = "t2.micro"
   key_name      = "manuel_jce"
-  subnet_id = "subnet-05e96d0ea715be1fc"
+  
   
 
   provisioner "local-exec"{
