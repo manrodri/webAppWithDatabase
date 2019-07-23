@@ -6,7 +6,7 @@ FORMAT = '[%(levelname)-2s] %(message)s'
 logging.basicConfig(format=FORMAT, level=20)
 logger = logging.getLogger()
 
-if len(sys.argv < 2):
+if len(sys.argv) < 2:
     logger.error('Missing argument: stop or terminate')
     sys.exit(1)
 if sys.argv[1] != 'stop' or sys.argv[1] != 'terminate':
