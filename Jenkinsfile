@@ -95,5 +95,8 @@ pipeline {
     }
 }
   
-/// write this in scripted language so I can catch error handling
+/// TODO: write this in scripted language so I can catch error handling
+// todo: MANAGE TERRAFORM FILE;
+// TODO: ZERO DOWNTIME DEPLOYMENT. ISOLATE ENVIRONMENTS.
+// TODO: DATA MIGRATION STRATEGY.
 
