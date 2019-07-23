@@ -37,7 +37,8 @@ resource "aws_instance" "staging_server" {
   tags = {
     Name = "server deployed by Terraform"
     owner= "manuel"
-    provisioned="terraform"
+    YelpCamp="true"
+
   }
 }
 
